@@ -1,0 +1,22 @@
+html {
+  background-color: black;
+  color: white;
+}
+
+.test {
+  margin: 90px auto;
+  text-align: center;
+  width: 100px;
+  height: 200px;
+  outline: white solid 2px;
+  box-shadow: 0 0 10px white;
+  transition: .6s;
+  cursor:pointer;
+}
+
+.testActive {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+
+}
