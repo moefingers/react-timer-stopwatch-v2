@@ -1,6 +1,14 @@
+/* common */
 html {
   background-color: black;
   color: white;
+  font-weight: 400;
+  font-family:  'Gill Sans', 'Gill Sans MT', "Calibri", 'Trebuchet MS', sans-serif;
+  
+}
+
+body {
+  animation: opacity0to1 ease 1s;
 }
 
 * {
@@ -8,45 +16,117 @@ html {
   padding: 0;
 }
 
-.test-wrapper {
+
+/* stopwatch */
+
+.stopwatch-wrapper {
   margin: 90px auto;
   width: 100px;
   height: 200px;
   position: relative;
   outline: white solid 2px;
   box-shadow: 0 0 10px white;
-  transition: .6s;
-  cursor:pointer;
+  transition: 1s ease-in-out;
 }
-
-.test-wrapper-altered {
+/* make stopwatch into circle */
+.stopwatch-wrapper-contracted {
   width: 100px;
   height: 100px;
   border-radius: 50%;
 }
 
+/* stopwatch-button class */
+.stopwatch-button{
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: .5s linear;
+  color:white;
+}
+.stopwatch-button:hover, .stopwatch-button:active{
+  font-size: larger;
+  transition: .4s;
+}
+.stopwatch-button:active{
+  background-color: rgba(255,255,255, 0.5);
+  transition: background-color 0s !important;
+}
+
+/* expand and contract stopwatch button */
+.stopwatch-button.expand-contract-stopwatch {
+  position: absolute;
+  transform: translate(0%, 0%);
+  top: 0%;
+  left: 0%;
+  transition: all 1s ease-in-out, font-size 0.4s ease-in-out;
+
+}
+.stopwatch-button.expand-contract-stopwatch-contracted {
+  transform: translate(-50%, -50%);
+  top: 23%;
+  left: 20%;
+}
+
+/* buttons for start/stop button as well as lap */
+.stopwatch-startstop-lap-container {
+  position: absolute;
+  top: 90%;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items:flex-start;
+  transition: 1s ease-out
+}
+.stopwatch-startstop-lap-container-contracted {
+  top: 65%;
+}
+
+
+
+
+/* stopwatch navigation buttons */
+.stopwatch-button.stopwatch-navigation {
+  line-height: 10px;
+  padding: 0 3px;
+}
+
+
 .test-child{
-  width: 40px;
   /* outline: white dashed 1px; */
   position: absolute;
-  top: 20%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  transition: .5s;
+  top: 80%;
+  left: 10%;
+  transform: translate(0, 0);
+  transition: 1s ease-out;
 
   text-align: center;
 }
 
 .test-child-altered{
+  transform: translate(-50%, -50%);
+  left: 50%;
   top: 50%;
 }
 
 
-.stopwatch-wrapper{
 
-}
 
 .stopwatch-title{
   width: fit-content;
   margin: 0 auto;
 }
+
+
+/* animations */
+
+@keyframes opacity0to1 {
+  0% {
+      opacity: 0;
+  }
+
+  100% {
+      opacity: 1;
+  }
+} 
