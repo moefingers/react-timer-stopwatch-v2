@@ -3,20 +3,35 @@ html {
   color: white;
 }
 
-.test {
+.test-wrapper {
   margin: 90px auto;
-  text-align: center;
   width: 100px;
   height: 200px;
+  position: relative;
   outline: white solid 2px;
   box-shadow: 0 0 10px white;
   transition: .6s;
   cursor:pointer;
 }
 
-.testActive {
+.test-wrapper-altered {
   width: 100px;
   height: 100px;
   border-radius: 50%;
+}
 
+.test-child{
+  width: 40px;
+  /* outline: white dashed 1px; */
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: .5s;
+
+  text-align: center;
+}
+
+.test-child-altered{
+  top: 50%;
 }
