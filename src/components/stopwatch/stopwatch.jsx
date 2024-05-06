@@ -153,7 +153,7 @@ export default function Stopwatch() {
             <div ref={stopwatchWrapper} className={`stopwatch-wrapper ${contracted ? 'stopwatch-wrapper-contracted' : ''}`}>
                 <button className={`stopwatch-button expand-contract-stopwatch ${contracted ? 'expand-contract-stopwatch-contracted' : ''}`}  onClick={() => setContracted(!contracted)}>{contracted ? '➕' : '➖'}</button>
                 <div className={`test-child ${contracted ? 'test-child-altered' : ''}`}>
-                    {stopwatchTime}
+                    {turnMillisecondsPretty(stopwatchTime, stopwatchObject[currentStopwatchObjectIndex].formatSettings)}
                 </div>
                 <div className={`stopwatch-startstop-lap-container ${contracted ? 'stopwatch-startstop-lap-container-contracted' : ''}`}>
                     <button className="stopwatch-button" onClick={(event) => {event.stopPropagation(); runStopWatch()}}>{useIntervalActive ? 'Stop' : 'Start'}</button>
