@@ -15,11 +15,11 @@ export const unitInformationObject = {
 
   export const defaultFormatSettings = {
     units: {
-        hours: true,
-        minutes: false,
-        seconds: false,
+        hours: false,
+        minutes: true,
+        seconds: true,
     },
-    decimalPlaces: 0
+    decimalPlaces: 3
 }
   
   
@@ -48,6 +48,7 @@ export const unitInformationObject = {
         console.log(remainingMilliseconds / divisor)
         console.log(lastUnit)
         trailingDecimal = (remainingMilliseconds / divisor * (10 ** settingsObject.decimalPlaces)).toFixed(0)
+        if(trailingDecimal == 0){trailingDecimal =""; for(let i = 0; i < settingsObject.decimalPlaces; i++){trailingDecimal += "0"}}
     })
     console.log(trailingDecimal)
     console.log(settingsObject.decimalPlaces)

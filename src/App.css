@@ -40,7 +40,7 @@ body {
   background: transparent;
   border: none;
   cursor: pointer;
-  transition: .5s linear;
+  transition: .4s ease-in-out;
   color:white;
 }
 .stopwatch-button:hover, .stopwatch-button:active{
