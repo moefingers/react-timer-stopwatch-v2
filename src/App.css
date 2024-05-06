@@ -3,6 +3,11 @@ html {
   color: white;
 }
 
+* {
+  margin: 0;
+  padding: 0;
+}
+
 .test-wrapper {
   margin: 90px auto;
   width: 100px;
@@ -34,4 +39,14 @@ html {
 
 .test-child-altered{
   top: 50%;
+}
+
+
+.stopwatch-wrapper{
+
+}
+
+.stopwatch-title{
+  width: fit-content;
+  margin: 0 auto;
 }
