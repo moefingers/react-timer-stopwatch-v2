@@ -128,7 +128,7 @@ input:hover{
 /* stack using width to avoid exceeding height where 2x vw > vh 
 Imagine a portrait phone more extreme/longer than 1:2..
 then width is the limiting factor*/
-@media screen and ( width < 50vh ) and (orientation:portrait){
+@media screen and ( width < 50vh ) and (orientation:portrait){ /*case 1*/
   .stopwatch-section, .timer-section {
     width: 100vw;
     height: 100vw;
@@ -179,7 +179,7 @@ Imagine a landscape phone more extreme/longer than 2:1*/
     height: 100vh; 
   }
   :root {
-    --font-size-title: calc((0.0716 *100vh) - 1.57px);
+    --font-size-title: calc((0.0716 * 100vh) - 1.57px);
     --general-size-factor-px: (0.00188323 * 100vh);
   }
 }
@@ -329,6 +329,8 @@ Imagine a landscape phone more extreme/longer than 2:1*/
   transform: translate(-50%, -50%);
   left: 50%;
   top: 50%;
+  
+  font-size: calc(var(--general-size-factor-px) * 70);
 }
 
 
