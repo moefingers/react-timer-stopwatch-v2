@@ -41,7 +41,11 @@ export const unitInformationObject = {
     let remainingMilliseconds = milliseconds
     let trailingDecimal = false
     divisorArray.forEach((divisor) => {
-        prettyArray.push(Math.floor(remainingMilliseconds / divisor))
+        let prettySection = Math.floor(remainingMilliseconds / divisor)
+        if (prettySection.length <= 1){
+            console.log(prettySection)
+        }
+        prettyArray.push(prettySection)
         remainingMilliseconds = remainingMilliseconds % divisor
         console.log(remainingMilliseconds)
         console.log(divisor)

@@ -1,6 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react'
 
-import { fadeOpacityIn, slideAndFadeInFromLeft, slideAndFadeInFromRight, slideAndFadeOutToRight, slideAndFadeOutToLeft, expandToWidthThenToHeight } from '../../assets/Animations'
+import { 
+    fadeOpacityIn,
+    slideAndFadeInFromLeft, slideAndFadeInFromRight, slideAndFadeOutToRight, slideAndFadeOutToLeft,
+    slideAndFadeInFromLeftForCenteredObject, slideAndFadeInFromRightForCenteredObject, slideAndFadeOutToRightForCenteredObject, slideAndFadeOutToLeftForCenteredObject,
+     expandToWidthThenToHeight } from '../../assets/Animations'
 
 import {turnMillisecondsPretty, defaultFormatSettings} from '../../assets/TimeFormatting'
 
@@ -122,23 +126,26 @@ export default function Stopwatch() {
     }
 
     const stopwatchWrapper = useRef(null)
-    function navigateToKeyFromObject(destinationKey, fullObject, setCurrentKeyFunction, oldKey, element, force) {
+
+    // requires slideAndFadeOutToLeftForCenteredObject, slideAndFadeInFromRightForCenteredObject, slideAndFadeOutToRightForCenteredObject, slideAndFadeInFromLeftForCenteredObject
+    function navigateToKeyFromObjectAndDisplay(destinationKey, fullObject, setCurrentKeyFunction, oldKey, element, force) {
         let aboveMaxIndex = Object.keys(fullObject).length
 
         if((destinationKey < aboveMaxIndex && destinationKey >= 0) || force) {
+            const halfAnimationTime = 500 // for easy changing
             // decide animation behavior
             let [firstAnim, secondAnim] = []
             if(destinationKey > oldKey) { // animate to left
-                [firstAnim, secondAnim] = [slideAndFadeOutToLeft, slideAndFadeInFromRight]
+                [firstAnim, secondAnim] = [slideAndFadeOutToLeftForCenteredObject, slideAndFadeInFromRightForCenteredObject]
             } else if (destinationKey < oldKey) { // animate to right
-                [firstAnim, secondAnim] = [slideAndFadeOutToRight, slideAndFadeInFromLeft]
+                [firstAnim, secondAnim] = [slideAndFadeOutToRightForCenteredObject, slideAndFadeInFromLeftForCenteredObject]
             }
-            element.animate(firstAnim, 500)
+            element.animate(firstAnim, halfAnimationTime)
             // wait before animating second animation
             setTimeout(() => { // update current key and run second animation
                 setCurrentKeyFunction(destinationKey) 
-                element.animate(secondAnim, 500)
-            }, 500)
+                element.animate(secondAnim, halfAnimationTime)
+            }, halfAnimationTime)
 
 
         } else {
@@ -150,25 +157,31 @@ export default function Stopwatch() {
     return (
         <div className="stopwatch-section">
             
+            <h1 className="title">⏱ Stopwatch ⏱</h1>
             <div ref={stopwatchWrapper} className={`stopwatch-wrapper ${contracted ? 'stopwatch-wrapper-contracted' : ''}`}>
-                <button className={`stopwatch-button expand-contract-stopwatch ${contracted ? 'expand-contract-stopwatch-contracted' : ''}`}  onClick={() => setContracted(!contracted)}>{contracted ? '➕' : '➖'}</button>
-                <div className={`test-child ${contracted ? 'test-child-altered' : ''}`}>
+                <button className={`stopwatch-button expand-contract-stopwatch ${contracted ? 'expand-contract-stopwatch-contracted' : ''}`}  onClick={() => setContracted(!contracted)}></button>
+                <button className={`stopwatch-button stopwatch-navigation stopwatch-navigation-left`} onClick={(event) => navigateToKeyFromObjectAndDisplay(currentStopwatchObjectIndex - 1, stopwatchObject, setCurrentStopwatchObjectIndex, currentStopwatchObjectIndex, stopwatchWrapper.current)}>
+                    <div className='stopwatch-navigation-inner-left'>&lt;</div>
+                </button>
+                <button className={`stopwatch-button stopwatch-navigation stopwatch-navigation-right`} onClick={(event) => navigateToKeyFromObjectAndDisplay(currentStopwatchObjectIndex + 1, stopwatchObject, setCurrentStopwatchObjectIndex, currentStopwatchObjectIndex, stopwatchWrapper.current)}>
+                    <div className='stopwatch-navigation-inner-right'>&gt;</div>
+                </button>
+                <div className={`main-stopwatch-time ${contracted ? 'main-stopwatch-time-contracted' : ''}`}>
                     {turnMillisecondsPretty(stopwatchTime, stopwatchObject[currentStopwatchObjectIndex].formatSettings)}
                 </div>
                 <div className={`stopwatch-startstop-lap-container ${contracted ? 'stopwatch-startstop-lap-container-contracted' : ''}`}>
                     <button className="stopwatch-button" onClick={(event) => {event.stopPropagation(); runStopWatch()}}>{useIntervalActive ? 'Stop' : 'Start'}</button>
                     <button className="stopwatch-button" onClick={(event) => {event.stopPropagation(); addLapTimeToStopwatchArray("Lap")}}>Lap</button>
                 </div>
-            </div>
-            <button className={`stopwatch-button add-stopwatch-entry`} onClick={(event) => {event.stopPropagation();
+                
+            <button className={`stopwatch-button add-stopwatch-entry ${contracted ? 'add-stopwatch-entry-contracted' : ''}`} onClick={(event) => {event.stopPropagation();
             updateObjectEntry(stopwatchObject, Object.entries(stopwatchObject).length, Object.assign({}, defaultStopwatchObjectEntry, {name: `Stopwatch ${Object.entries(stopwatchObject).length}`}));
-            navigateToKeyFromObject(Object.entries(stopwatchObject).length, stopwatchObject, setCurrentStopwatchObjectIndex, currentStopwatchObjectIndex, stopwatchWrapper.current, true)}}
-            >New</button>
-            <button className={`stopwatch-button stopwatch-navigation`} onClick={(event) => navigateToKeyFromObject(currentStopwatchObjectIndex - 1, stopwatchObject, setCurrentStopwatchObjectIndex, currentStopwatchObjectIndex, stopwatchWrapper.current)}>&lt;</button>
-            <input className="stopwatch-title" value={stopwatchObject[currentStopwatchObjectIndex].name} onChange={(event) => updateObjectEntry(stopwatchObject, currentStopwatchObjectIndex, Object.assign({}, stopwatchObject[currentStopwatchObjectIndex], {name: event.target.value}))}/>
-            <button className={`stopwatch-button stopwatch-navigation`} onClick={(event) => navigateToKeyFromObject(currentStopwatchObjectIndex + 1, stopwatchObject, setCurrentStopwatchObjectIndex, currentStopwatchObjectIndex, stopwatchWrapper.current)}>&gt;</button>
+            navigateToKeyFromObjectAndDisplay(Object.entries(stopwatchObject).length, stopwatchObject, setCurrentStopwatchObjectIndex, currentStopwatchObjectIndex, stopwatchWrapper.current, true)}}
+            >➕</button>
+            <input className={`stopwatch-label-input ${contracted ? 'stopwatch-label-input-contracted' : ''}`} value={stopwatchObject[currentStopwatchObjectIndex].name} onChange={(event) => updateObjectEntry(stopwatchObject, currentStopwatchObjectIndex, Object.assign({}, stopwatchObject[currentStopwatchObjectIndex], {name: event.target.value}))}/>
+            </div>
 
-            <button onClick={() => console.log(turnMillisecondsPretty(900000, stopwatchObject[currentStopwatchObjectIndex].formatSettings))} className="stopwatch-button">Test x ms</button>
+            
         </div>
     )
 }
