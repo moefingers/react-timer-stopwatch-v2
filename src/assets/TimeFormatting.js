@@ -25,41 +25,38 @@ export const unitInformationObject = {
   
   export function turnMillisecondsPretty(milliseconds, settingsObject) {
 
-    console.log(milliseconds)
-    console.log(settingsObject)
-
+    // console.log(milliseconds)
     let divisorArray = []
     let lastUnit
+    let lastDivisor
     Object.keys(settingsObject.units).forEach((key) => {
         if (settingsObject.units[key]) {
             divisorArray.push(unitInformationObject[key].asMs)
             lastUnit = key
-            console.log(key)
+            lastDivisor = unitInformationObject[key].asMs
         }
     })
     let prettyArray = []
     let remainingMilliseconds = milliseconds
-    let trailingDecimal = false
     divisorArray.forEach((divisor) => {
-        let prettySection = Math.floor(remainingMilliseconds / divisor)
-        if (prettySection.length <= 1){
-            console.log(prettySection)
+        let prettySection
+        if (lastDivisor == divisor){
+          prettySection = (remainingMilliseconds / divisor).toFixed(settingsObject.decimalPlaces).toString()
+
+          if(Math.floor(remainingMilliseconds / divisor).toString().length < 2){
+            prettySection = "0" + prettySection
+          }
         }
+        else {
+          prettySection = Math.floor(remainingMilliseconds / divisor).toString()
+          remainingMilliseconds = remainingMilliseconds % divisor
+        }
+
+        if(prettySection.length < 2){prettySection = "0" + prettySection}
         prettyArray.push(prettySection)
-        remainingMilliseconds = remainingMilliseconds % divisor
-        console.log(remainingMilliseconds)
-        console.log(divisor)
-        console.log(remainingMilliseconds / divisor)
-        console.log(lastUnit)
-        trailingDecimal = (remainingMilliseconds / divisor * (10 ** settingsObject.decimalPlaces)).toFixed(0)
-        if(trailingDecimal == 0){trailingDecimal =""; for(let i = 0; i < settingsObject.decimalPlaces; i++){trailingDecimal += "0"}}
     })
-    console.log(trailingDecimal)
-    console.log(settingsObject.decimalPlaces)
-    console.log( `${prettyArray.join(":")}${settingsObject.decimalPlaces != 0 ? "." + trailingDecimal : ""}`)
-  
-    // return `${prettyArray.join(":")}${settingsObject.unitsWithDecimals.seconds ? "." + trailingDecimal : ""}`
-    return `${prettyArray.join(":")}${settingsObject.decimalPlaces != 0 ? "." + trailingDecimal : ""}`
+    
+    return `${prettyArray.join(":")}`
   }
   
   export function turnPrettyTimeIntoMilliseconds(prettyTime, settingsObject, timeRegExp) {

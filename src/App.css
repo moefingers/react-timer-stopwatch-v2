@@ -268,14 +268,19 @@ Imagine a landscape phone more extreme/longer than 2:1*/
   top: 90%;
   left: 50%;
   transform: translate(-50%, 0%);
-  width: 100%;
+  width: 80%;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items:flex-start;
   transition: var(--slow-transition)
 }
 .stopwatch-startstop-lap-container-contracted {
   top: 65%;
+}
+
+.already-lapped {
+  animation: opacity0to1 var(--fast-transition);
+  font-size: calc(var(--font-size-button-medium)/1.3);
 }
 
 

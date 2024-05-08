@@ -34,7 +34,7 @@ export default function Stopwatch() {
     const [stopwatchObject, setStopwatchObject] = useState({0: defaultStopwatchObjectEntry})
     const [currentStopwatchObjectIndex, setCurrentStopwatchObjectIndex] = useState(0)
     useEffect(() => {
-        
+        setStopwatchTime( stopwatchObject[currentStopwatchObjectIndex].storedTime)
     }, [currentStopwatchObjectIndex])
 
 
@@ -43,7 +43,7 @@ export default function Stopwatch() {
         setLastStoppedStopwatchTime(stopwatchTime) // document old time
         
       
-        if(stopwatchTime > 0 && useIntervalActive){addLapTimeToStopwatchArray("Stopped")}
+        if(stopwatchTime > 0 && useIntervalActive){addLapTimeToStopwatchArray("Stopped"); console.log("stopped")}
         !useIntervalActive && setLapAndStopped(false)
         setUseIntervalActive(!useIntervalActive) // begin updating difference in time by activating interval
     }
@@ -60,12 +60,12 @@ export default function Stopwatch() {
             lapArray.push(object.lastDifference)
             totalLapTime += object.lastDifference
             if(object.reason !== 'Stopped'){
-            lapArrayWithoutStopped.push(object.lastDifference);
-            totalLapTimeWithoutStopped += object.lastDifference
+                lapArrayWithoutStopped.push(object.lastDifference);
+                totalLapTimeWithoutStopped += object.lastDifference
             }
             if(object.time === stopwatchTime){ // if time is the same
-            if (object.reason === 'Stopped') {alreadyContainsTimeType = "Stopped"; indexOfTimeObjectToUpdate = index} // already contains time of the STOPPED reason
-            else if (object.reason === 'Lap' || object.reason === 'Stop + Lap') {alreadyContainsTimeType = "Lap"} // already contains time of LAP or STOPPED AND LAP reason
+                if (object.reason === 'Stopped') {alreadyContainsTimeType = "Stopped"; indexOfTimeObjectToUpdate = index} // already contains time of the STOPPED reason
+                else if (object.reason === 'Lap' || object.reason === 'Stop + Lap') {alreadyContainsTimeType = "Lap"} // already contains time of LAP or STOPPED AND LAP reason
             }
         }) // end for each 
     
@@ -78,24 +78,30 @@ export default function Stopwatch() {
                 {timeArray: [
                     ...stopwatchObject[currentStopwatchObjectIndex].timeArray,
                     {time: stopwatchTime, lastDifference: lastDifference, reason: 'Stop + Lap'}
-                ]}
+                ],
+                storedTime: stopwatchTime}
             )
         
-        
+            
             setLapAndStopped(true)
         }
         if (alreadyContainsTimeType == "" || reason == "Stopped") { // add time with LAP type if it doesn't already exist as any other type
-
+            console.log("attempted succ")
             updateObjectEntry(
                 stopwatchObject, 
                 currentStopwatchObjectIndex,
                 {timeArray: [
                     ...stopwatchObject[currentStopwatchObjectIndex].timeArray, 
                     {time: stopwatchTime, lastDifference: stopwatchTime - lastLapStopwatchTime, reason: typeof reason == 'string' && reason || 'Lap'}
-                ]}
+                ],
+                storedTime: stopwatchTime}
             )
           
         } // include old array and tag on time with LAP reason
+
+    
+
+
         let divisor = lapArray.length == 0 ? 1 : lapArray.length
         console.log(`${totalLapTime} / ${divisor}`)
         setAvgLapTime(totalLapTime / divisor)
@@ -106,11 +112,13 @@ export default function Stopwatch() {
     }   
     useInterval(() => {
         setStopwatchTime(lastStoppedStopwatchTime + Date.now() - timeOfLastStopwatchChange)
+
     }, useIntervalActive ? 10 : null)
 
 
     //generic updateObjectEntry function
     function updateObjectEntry(fullObject, entryKey, entryValue) {
+        console.log(fullObject, entryKey, entryValue)
         let updatedObject = Object.assign(
             {}, 
             fullObject, 
@@ -140,11 +148,11 @@ export default function Stopwatch() {
             } else if (destinationKey < oldKey) { // animate to right
                 [firstAnim, secondAnim] = [slideAndFadeOutToRightForCenteredObject, slideAndFadeInFromLeftForCenteredObject]
             }
-            element.animate(firstAnim, halfAnimationTime)
+            element.animate(firstAnim, {duration: halfAnimationTime, easing: "ease-in"})
             // wait before animating second animation
             setTimeout(() => { // update current key and run second animation
                 setCurrentKeyFunction(destinationKey) 
-                element.animate(secondAnim, halfAnimationTime)
+                element.animate(secondAnim, {duration: halfAnimationTime, easing: "ease-out"})
             }, halfAnimationTime)
 
 
@@ -160,18 +168,18 @@ export default function Stopwatch() {
             <h1 className="title">⏱ Stopwatch ⏱</h1>
             <div ref={stopwatchWrapper} className={`stopwatch-wrapper ${contracted ? 'stopwatch-wrapper-contracted' : ''}`}>
                 <button className={`stopwatch-button expand-contract-stopwatch ${contracted ? 'expand-contract-stopwatch-contracted' : ''}`}  onClick={() => setContracted(!contracted)}></button>
-                <button className={`stopwatch-button stopwatch-navigation stopwatch-navigation-left`} onClick={(event) => navigateToKeyFromObjectAndDisplay(currentStopwatchObjectIndex - 1, stopwatchObject, setCurrentStopwatchObjectIndex, currentStopwatchObjectIndex, stopwatchWrapper.current)}>
+                {!useIntervalActive && currentStopwatchObjectIndex > 0 && <button className={`stopwatch-button stopwatch-navigation stopwatch-navigation-left`} onClick={(event) => navigateToKeyFromObjectAndDisplay(currentStopwatchObjectIndex - 1, stopwatchObject, setCurrentStopwatchObjectIndex, currentStopwatchObjectIndex, stopwatchWrapper.current)}>
                     <div className='stopwatch-navigation-inner-left'>&lt;</div>
-                </button>
-                <button className={`stopwatch-button stopwatch-navigation stopwatch-navigation-right`} onClick={(event) => navigateToKeyFromObjectAndDisplay(currentStopwatchObjectIndex + 1, stopwatchObject, setCurrentStopwatchObjectIndex, currentStopwatchObjectIndex, stopwatchWrapper.current)}>
+                </button>}
+                {!useIntervalActive && currentStopwatchObjectIndex < Object.keys(stopwatchObject).length - 1 && <button className={`stopwatch-button stopwatch-navigation stopwatch-navigation-right`} onClick={(event) => navigateToKeyFromObjectAndDisplay(currentStopwatchObjectIndex + 1, stopwatchObject, setCurrentStopwatchObjectIndex, currentStopwatchObjectIndex, stopwatchWrapper.current)}>
                     <div className='stopwatch-navigation-inner-right'>&gt;</div>
-                </button>
+                </button>}
                 <div className={`main-stopwatch-time ${contracted ? 'main-stopwatch-time-contracted' : ''}`}>
                     {turnMillisecondsPretty(stopwatchTime, stopwatchObject[currentStopwatchObjectIndex].formatSettings)}
                 </div>
                 <div className={`stopwatch-startstop-lap-container ${contracted ? 'stopwatch-startstop-lap-container-contracted' : ''}`}>
                     <button className="stopwatch-button" onClick={(event) => {event.stopPropagation(); runStopWatch()}}>{useIntervalActive ? 'Stop' : 'Start'}</button>
-                    <button className="stopwatch-button" onClick={(event) => {event.stopPropagation(); addLapTimeToStopwatchArray("Lap")}}>Lap</button>
+                    {!lapAndStopped ? <button className="stopwatch-button" onClick={(event) => {event.stopPropagation(); addLapTimeToStopwatchArray("Lap")}}>Lap</button> : <div className='already-lapped'>already<br/>lapped</div>}
                 </div>
                 
             <button className={`stopwatch-button add-stopwatch-entry ${contracted ? 'add-stopwatch-entry-contracted' : ''}`} onClick={(event) => {event.stopPropagation();
