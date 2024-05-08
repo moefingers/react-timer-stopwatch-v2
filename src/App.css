@@ -443,6 +443,9 @@ input.stopwatch-label-input-contracted {
   list-style-type: none;
   width: 100%;
 }
+.stopwatch-time-item{
+  font-size: calc(var(--general-size-factor-px) * 24);
+}
 
 /* animations */
 
