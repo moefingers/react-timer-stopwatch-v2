@@ -68,7 +68,7 @@ export const lapAnimationContracted = [
     }, {
         transform: 'translate(-50%, -50%)', 
         opacity: 0.3, 
-        fontSize: "calc(var(--general-size-factor-px) * 35)"
+        fontSize: "calc(var(--general-size-factor-px) * 30)"
     }
 ]
 
