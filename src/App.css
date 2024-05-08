@@ -414,6 +414,7 @@ input.stopwatch-label-input-contracted {
 
 
 .stopwatch-list-container{
+  z-index: -30;
   position: absolute;
   transform: translate(0, -50%);
   top: 48%;
