@@ -23,8 +23,8 @@ export const unitInformationObject = {
 }
   
   
-  export function turnMillisecondsPretty(milliseconds, settingsObject) {
-
+  export function turnMillisecondsPretty(milliseconds, settingsObject, removeBlanks = false) {
+    removeBlanks = false
     // console.log(milliseconds)
     let divisorArray = []
     let lastUnit
@@ -42,8 +42,8 @@ export const unitInformationObject = {
         let prettySection
         if (lastDivisor == divisor){
           prettySection = (remainingMilliseconds / divisor).toFixed(settingsObject.decimalPlaces).toString()
-
-          if(Math.floor(remainingMilliseconds / divisor).toString().length < 2){
+          
+          if((Math.floor(remainingMilliseconds / divisor).toString().length < 2) && !removeBlanks){
             prettySection = "0" + prettySection
           }
         }
@@ -52,8 +52,10 @@ export const unitInformationObject = {
           remainingMilliseconds = remainingMilliseconds % divisor
         }
 
-        if(prettySection.length < 2){prettySection = "0" + prettySection}
-        prettyArray.push(prettySection)
+        if(prettySection.length < 2 && !removeBlanks){prettySection = "0" + prettySection}
+
+        if(prettySection != ""){prettyArray.push(prettySection)}
+        
     })
     
     return `${prettyArray.join(":")}`

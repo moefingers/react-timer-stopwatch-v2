@@ -18,17 +18,17 @@
 */
 :root {
   /* --background-color-primary: rgba(0, 0, 0, 1); */
-  --background-color-primary: rgba(0,0,0, 1);
+  --background-color-primary: rgba(0,0,50, 1);
   --background-color-secondary: rgba(20,20,20, 1);
 
-  --complementary-color-primary: rgba(255, 255, 255, 1);
+  --complementary-color-primary: rgba(00,100,255, 1);
   /* --complementary-color-primary: rgba(20, 20, 255, 1); */
 
   --active-button-background: rgba(255,255,255, .5);
   
   /* --text-color-primary: rgba(20, 20, 255, 1);
   --text-color-secondary: rgba(20, 20, 255, 1); */
-  --text-color-primary: rgba(255, 255, 255, 1); 
+  --text-color-primary: rgba(0,255,255, 1); 
   --text-color-secondary: rgba(210, 210, 210, 1);
 
   /* for dynamic shadow thickness */
@@ -279,6 +279,8 @@ Imagine a landscape phone more extreme/longer than 2:1*/
 }
 
 .already-lapped {
+  text-align: center;
+  transform: translate(0, -25%);
   animation: opacity0to1 var(--fast-transition);
   font-size: calc(var(--font-size-button-medium)/1.3);
 }
@@ -317,7 +319,7 @@ Imagine a landscape phone more extreme/longer than 2:1*/
   animation: slideLeft .5s linear infinite reverse;
 }
 
-
+/************ main stop watch time and lap notif */
 .main-stopwatch-time{
   /* outline: white dashed 1px; */
   transform: translate(0, 0);
@@ -325,8 +327,9 @@ Imagine a landscape phone more extreme/longer than 2:1*/
   text-align: center;
 
   position: absolute;
-  top: 80%;
-  left: 10%;
+  transform: translate(0, -50%);
+  top: 86%;
+  left: 3%;
 
   font-family: monospace, monospace;
 
@@ -335,13 +338,34 @@ Imagine a landscape phone more extreme/longer than 2:1*/
 }
 
 .main-stopwatch-time-contracted{
-  transform: translate(-50%, -50%);
   left: 50%;
   top: 50%;
-  
+  transform: translate(-50%, -50%);
   /* this will actually be forced over by js */
   font-size: calc(var(--general-size-factor-px) * 80);
 }
+.lap-notification{
+  opacity: 0;
+  font-family: monospace, monospace;
+  text-align: center;
+  text-wrap: nowrap;
+  position: absolute;
+  transform: translate(0, -50%);
+  top: 80%;
+  left: 3%;
+  font-size: calc(var(--general-size-factor-px) * 24);
+
+  transition: var(--slow-transition);
+}
+.lap-notification-contracted{
+  opacity: 0.3;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 40%;
+  left: 50%;
+  font-size: calc(var(--general-size-factor-px) * 30);
+}
+
 
 
 /* ************************stopwatch label */
@@ -365,6 +389,9 @@ input.stopwatch-label-input-contracted {
   left: 93%;
   transform: translate(-50%, -50%);
   transition: var(--slow-transition)
+}
+.stopwatch-button.stopwatch-button.add-stopwatch-entry:hover{
+  transition: var(--fast-transition);
 }
 
 .stopwatch-button.add-stopwatch-entry-contracted{

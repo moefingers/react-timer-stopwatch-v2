@@ -18,6 +18,7 @@ export const slideAndFadeOutToRight = [{transform: 'translateX(0)', opacity: 1},
 
 export const slideAndFadeOutToLeft = [{transform: 'translateX(0)', opacity: 1}, {transform: 'translateX(-100%)', opacity: 0}]
 
+
 //for centered objects
 
 export const slideAndFadeInFromLeftForCenteredObject = [{left: '-50%', opacity: 0}, {left: '50%', opacity: 1}]
@@ -53,3 +54,36 @@ return [
 ]
 
 }
+
+
+export const lapAnimationContracted = [
+    {
+        transform: 'translate(-50%, -50%)', 
+        top: "50%", 
+        left: "50%", 
+        opacity: 1, 
+        fontSize: "calc(var(--general-size-factor-px) * 80)"
+    }, {
+        opacity: 1
+    }, {
+        transform: 'translate(-50%, -50%)', 
+        opacity: 0.3, 
+        fontSize: "calc(var(--general-size-factor-px) * 35)"
+    }
+]
+
+export const lapAnimation = [
+    {
+        transform: 'translate(0%, -50%)', 
+        top: "86%", 
+        left: "3", 
+        opacity: 1, 
+        fontSize: "calc(var(--general-size-factor-px) * 28)"
+    }, {
+        opacity: 1
+    }, {
+        transform: 'translate(0%, -50%)', 
+        opacity: 0.3, 
+        fontSize: "calc(var(--general-size-factor-px) * 24)"
+    }
+]
