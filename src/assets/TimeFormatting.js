@@ -59,6 +59,7 @@ export const unitInformationObject = {
     })
     
     return `${prettyArray.join(":")}`
+    // return ""
   }
   
   export function turnPrettyTimeIntoMilliseconds(prettyTime, settingsObject, timeRegExp) {
