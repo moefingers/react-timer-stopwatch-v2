@@ -18,10 +18,12 @@
 */
 :root {
   /* --background-color-primary: rgba(0, 0, 0, 1); */
-  --background-color-primary: rgba(0,0,50, 1);
+  --background-color-primary: rgba(0,0,0, 1);
   --background-color-secondary: rgba(20,20,20, 1);
 
   --complementary-color-primary: rgba(00,100,255, 1);
+  
+  --complementary-color-secondary: rgba(00,255,255, 1);
   /* --complementary-color-primary: rgba(20, 20, 255, 1); */
 
   --active-button-background: rgba(255,255,255, .5);
@@ -37,10 +39,11 @@
   --box-shadow-setting-primary: 0 0 calc(var(--general-size-factor-px) * 10) calc(var(--general-size-factor-px) * 10) var(--complementary-color-primary);
   --box-shadow-setting-secondary: 0 0 calc(var(--general-size-factor-px) * 10) calc(var(--general-size-factor-px) * 1) var(--complementary-color-primary);
 
+  --box-shadow-setting-secondary-hover: 0 0 calc(var(--general-size-factor-px) * 10) calc(var(--general-size-factor-px) * 2) var(--complementary-color-secondary);
+  --box-shadow-setting-secondary-active: 0 0 calc(var(--general-size-factor-px) * 10) calc(var(--general-size-factor-px) * 3) var(--text-color-primary);
 
 
 
- 
 
 
   --font-size-title: calc(var(--general-size-factor-px) * 40);
@@ -83,6 +86,7 @@ body {
 
 input {
   border: 0;
+  outline: 0;
   text-align: center;
   background-color: var(--background-color-primary);
   color: var(--text-color-secondary);
@@ -91,9 +95,17 @@ input {
   transition: var(--moderate-transition);
   border-radius: calc(var(--general-size-factor-px) * 20); /* any high number will do*/
   padding: calc(var(--general-size-factor-px) * 0) calc(var(--general-size-factor-px) * 4);
+  transition: var(--slow-transition)
 }
 input:hover{
   color: var(--text-color-primary);
+  box-shadow: var(--box-shadow-setting-secondary-hover);
+  transition: var(--fast-transition)
+}
+input:focus{
+  color: var(--text-color-primary);
+  box-shadow: var(--box-shadow-setting-secondary-active);
+  transition: var(--fast-transition)
 }
 /* common between stopwatch and timer*/
 
@@ -248,7 +260,9 @@ Imagine a landscape phone more extreme/longer than 2:1*/
   border-radius: 50%;
   width: calc(var(--font-size-button-medium) * 0.8);
   height: calc(var(--font-size-button-medium) * 0.8);
-  transition: all var(--slow-transition),width var(--fast-transition), height var(--fast-transition), border-radius var(--fast-transition);
+  transition: all var(--slow-transition),width var(--fast-transition), height var(--fast-transition), border-radius var(--fast-transition), box-shadow var(--fast-transition);
+  
+  box-shadow: var(--box-shadow-setting-secondary-hover);
 }
 .stopwatch-button.expand-contract-stopwatch-contracted {
   border-radius:33%;
@@ -375,7 +389,6 @@ input.stopwatch-label-input {
   top: 7%;
   left: 50%;
   width: 73%;
-  transition: var(--slow-transition);
 }
 input.stopwatch-label-input-contracted {
   top: 28%;
@@ -399,6 +412,36 @@ input.stopwatch-label-input-contracted {
   left: 80%;
 }
 
+
+.stopwatch-list-container{
+  position: absolute;
+  transform: translate(0, -50%);
+  top: 48%;
+  left: 3%;
+  width: 90%;
+  height: 68%;
+  transition: var(--slow-transition);
+  overflow: hidden;
+}
+.stopwatch-list-container-contracted{
+  opacity: 0;
+  visibility: hidden;
+}
+.stopwatch-scroll-container{
+  position:absolute;
+  transition: var(--slow-transition);
+  height: 100%;
+  width: 100%;
+  overflow-x:hidden;
+  overflow-y:scroll;
+  scroll-behavior: smooth;
+  box-sizing: content-box;
+}
+
+.stopwatch-unordered-list{
+  list-style-type: none;
+  width: 100%;
+}
 
 /* animations */
 

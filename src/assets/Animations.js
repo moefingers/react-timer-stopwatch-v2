@@ -83,7 +83,7 @@ export const lapAnimation = [
         opacity: 1
     }, {
         transform: 'translate(0%, -50%)', 
-        opacity: 0.3, 
+        opacity: 0, 
         fontSize: "calc(var(--general-size-factor-px) * 24)"
     }
 ]
