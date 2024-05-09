@@ -372,7 +372,7 @@ Imagine a landscape phone more extreme/longer than 2:1*/
   position: absolute;
   transform: translate(0, -50%);
   top: 80%;
-  left: 3%;
+  left: 0%;
   font-size: calc(var(--general-size-factor-px) * 24);
 
   transition: var(--slow-transition);
@@ -575,8 +575,8 @@ input.stopwatch-label-input {
   position: absolute;
   transform: translate(0, -50%);
   top: 42%;
-  left: 3%;
-  width: 90%;
+  left: 4%;
+  width: 96%;
   height: 60%;
   transition: .5s .5s ease-in-out;
   overflow: hidden;
@@ -604,6 +604,18 @@ input.stopwatch-label-input {
 }
 .stopwatch-time-item{
   font-size: calc(var(--general-size-factor-px) * 24);
+}
+
+.stopwatch-time-item .delete-stopwatch-time.stopwatch-button{
+  font-size: calc(var(--general-size-factor-px) * 24)
+}
+.stopwatch-time-item .delete-stopwatch-time{
+  opacity: 0;
+  transition: var(--moderate-transition);
+  cursor: pointer;
+}
+.stopwatch-time-item:hover .delete-stopwatch-time{
+  opacity: 1;
 }
 
 /* animations */

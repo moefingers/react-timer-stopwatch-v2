@@ -1,5 +1,5 @@
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { fadeOpacityIn, slideAndFadeInFromLeft } from '../../assets/Animations'
 
@@ -8,14 +8,27 @@ import {turnMillisecondsPretty, defaultFormatSettings} from '../../assets/TimeFo
 
 export default function StopwatchTimeItem(props){
     const {
-        object: {
+        timeObject,
+        timeObject: {
             time,
             lastDifference,
             reason
         },
-         passedKey,
-         settingsObject
-        } = props
+        passedKey,
+        settingsObject,
+        deleteTimeItem,
+        currentStopwatchObjectIndex,
+    } = props
+
+    // confirm del
+    const [timeItemConfirmDelete, setTimeItemConfirmDelete] = useState(false)
+    function confirmDelete() {
+        if (!timeItemConfirmDelete) {
+            setTimeItemConfirmDelete(true)
+        } else if (timeItemConfirmDelete) {
+            deleteTimeItem(currentStopwatchObjectIndex, timeObject)
+        }
+    }
 
     const stopwatchItemElement = useRef()
 
@@ -32,6 +45,10 @@ export default function StopwatchTimeItem(props){
         ${reason === 'Stopped' ? 'text-shadow-blue'
         : reason === 'Lap' ? 'text-shadow-cyan' 
         : 'text-shadow-green'}
-        `}>{turnMillisecondsPretty(time, settingsObject)}(-{turnMillisecondsPretty(lastDifference, settingsObject)})<span className='stopwatch-time-reason'> - {reason}</span></li>
+        `}>
+            {turnMillisecondsPretty(time, settingsObject)}(-{turnMillisecondsPretty(lastDifference, settingsObject)})
+            <span className='stopwatch-time-reason'> - {reason}</span>
+            <span className="stopwatch-button delete-stopwatch-time" onClick={confirmDelete} onMouseLeave={() => {setTimeItemConfirmDelete(false)}}>{timeItemConfirmDelete ? "❌" : "✖"}</span>    
+        </li>
     )
 }
