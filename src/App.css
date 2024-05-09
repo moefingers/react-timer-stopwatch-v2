@@ -109,9 +109,15 @@ input:focus{
 }
 /* common between stopwatch and timer*/
 
+.app{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%)
+}
 .stopwatch-section, .timer-section {
   margin: auto;
-  /* outline: dashed red 1px; */
+  outline: dashed red 1px;
   overflow: hidden;
   justify-content: center;
   align-items: center;
