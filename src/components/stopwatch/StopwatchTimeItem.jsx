@@ -3,6 +3,9 @@ import { useEffect, useRef } from 'react'
 
 import { fadeOpacityIn, slideAndFadeInFromLeft } from '../../assets/Animations'
 
+
+import {turnMillisecondsPretty, defaultFormatSettings} from '../../assets/TimeFormatting'
+
 export default function StopwatchTimeItem(props){
     const {
         object: {
@@ -10,7 +13,8 @@ export default function StopwatchTimeItem(props){
             lastDifference,
             reason
         },
-         passedKey
+         passedKey,
+         settingsObject
         } = props
 
     const stopwatchItemElement = useRef()
@@ -28,6 +32,6 @@ export default function StopwatchTimeItem(props){
         ${reason === 'Stopped' ? 'text-shadow-blue'
         : reason === 'Lap' ? 'text-shadow-cyan' 
         : 'text-shadow-green'}
-        `}>{time}({lastDifference})<span className='stopwatch-time-reason'> - {reason}</span></li>
+        `}>{turnMillisecondsPretty(time, settingsObject)}(-{turnMillisecondsPretty(lastDifference, settingsObject)})<span className='stopwatch-time-reason'> - {reason}</span></li>
     )
 }

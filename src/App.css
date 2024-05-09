@@ -435,12 +435,12 @@ div.average-lap-secondary{
 /* expanded mode right side ***** always shown in expanded mode */
 div.average-lap-info-primary{
   transform: translate(-100%, 0%);
-  left: 100%;
+  left: 95%;
 }
 div.average-lap-primary{
   opacity: 1;
   transform: translate(-100%, 100%);
-  left: 100%;
+  left: 95%;
 }
 /* contracted mode top */
 div.average-lap-container.contracted div.average-lap-info-primary{
