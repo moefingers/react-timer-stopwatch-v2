@@ -310,7 +310,22 @@ Imagine a landscape phone more extreme/longer than 2:1*/
   font-size: calc(var(--font-size-button-medium)/1.3);
 }
 
+/* ************ add stop watch entry button "New" */
+.stopwatch-button.add-stopwatch-entry{
+  position: absolute;
+  top: 7%;
+  left: 93%;
+  transform: translate(-50%, -50%);
+  transition: var(--slow-transition)
+}
+.stopwatch-button.stopwatch-button.add-stopwatch-entry:hover{
+  transition: var(--fast-transition);
+}
 
+.stopwatch-button.add-stopwatch-entry-contracted{
+  top: 18%;
+  left: 80%;
+}
 
 
 /* stopwatch navigation buttons */
@@ -342,6 +357,38 @@ Imagine a landscape phone more extreme/longer than 2:1*/
 }
 .stopwatch-button:hover .stopwatch-navigation-inner-right{
   animation: slideLeft .5s linear infinite reverse;
+}
+
+/* ***********stopwatch settings button */
+.stopwatch-button.stopwatch-settings-button{
+  position: absolute;
+  top: 93.5%;
+  left: 40%;
+  width: var(--font-size-button-medium);
+  height: var(--font-size-button-medium);
+  line-height: var(--font-size-button-medium);
+  text-align: center;
+  vertical-align: middle;
+  transform: translate(-50%, -50%);
+  transition: var(--slow-transition), font-size var(--fast-transition);
+  clip-path: url("./assets/gear.svg");
+  
+
+  offset-path: circle(40% at 50% 50%);
+  /* animation: spinClockwiseForCenteredObject 1s linear infinite; */
+  animation: offsetPathTest 4s linear infinite;
+  animation-play-state: paused;
+}
+.stopwatch-button.stopwathc-settings-button:hover {
+  transition: var(--fast-transition), font-size var(--slow-transition);
+}
+
+.stopwatch-button.stopwatch-settings-button.contracted{
+  top: 80%;
+  left: 20%;
+}
+.stopwatch-button.stopwatch-settings-button.spinning{
+  animation-play-state: running;
 }
 
 /************ main stop watch time and lap notif */
@@ -473,7 +520,7 @@ div.average-lap-container.contracted div.average-lap-secondary{
 }
 
 
-/* input container includes dropdown and input label */
+/***************** input container includes dropdown and input label */
 .input-container{
   position: absolute;
   transform: translate(-50%, -50%);
@@ -488,7 +535,14 @@ div.average-lap-container.contracted div.average-lap-secondary{
   top: 27%;
 
 }
-/* ************************stopwatch label */
+
+.input-container:hover .stopwatch-list-dropdown{
+  opacity: 1;
+  visibility: visible;
+  height: 400%;
+  transition: .8s;
+}
+
 input.stopwatch-label-input {
   position: absolute;
   transform: translate(-50%, 0%);
@@ -530,13 +584,6 @@ input.stopwatch-label-input {
 
 }
 
-.input-container:hover .stopwatch-list-dropdown{
-  opacity: 1;
-  visibility: visible;
-  height: 400%;
-  transition: .8s;
-}
-
 .stopwatch-list-dropdown-item{
   text-align: center;
   position: static;
@@ -558,22 +605,9 @@ input.stopwatch-label-input {
   transition: .3s;
 }
 
-/* ****** add stop watch entry button "New" */
-.stopwatch-button.add-stopwatch-entry{
-  position: absolute;
-  top: 7%;
-  left: 93%;
-  transform: translate(-50%, -50%);
-  transition: var(--slow-transition)
-}
-.stopwatch-button.stopwatch-button.add-stopwatch-entry:hover{
-  transition: var(--fast-transition);
-}
 
-.stopwatch-button.add-stopwatch-entry-contracted{
-  top: 18%;
-  left: 80%;
-}
+
+/* stopwatch time list container  */
 .stopwatch-list-container{
   z-index: -3;
   position: absolute;
@@ -656,6 +690,33 @@ input.stopwatch-label-input {
   }
   100% {
     transform: translateX(0%);
+  }
+}
+
+@keyframes spinClockwiseForCenteredObject {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+@keyframes backToZeroDegreesRotationForCenteredObject {
+  0% {
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+}
+
+@keyframes offsetPathTest {
+  0% {
+    offset-distance: 0%;
+    offset-path: circle(40% at 50% 50%);
+  }
+  100% {
+    offset-distance: 1000%;
+    offset-path: circle(0% at 50% 50%);
   }
 }
 
