@@ -17,6 +17,7 @@ export default function Stopwatch() {
     //states
     
     const defaultStopwatchObjectEntry = {
+        name: "Stopwatch 0",
         timeOfLastStopwatchChange: Date.now(),
         lastStoppedStopwatchTime: 0,
         lastRanStopwatchTime: Date.now(),
@@ -135,7 +136,15 @@ export default function Stopwatch() {
             setStopwatchTime(lastStoppedStopwatchTime + Date.now() - timeOfLastStopwatchChange)
             console.log("running")
         }
-
+        Object.keys(stopwatchObject).forEach(key => {
+            if(stopwatchObject[key].running){
+                updateObjectEntry(
+                    stopwatchObject,
+                    key, 
+                    {stopwatchTime: stopwatchObject[key].lastStoppedStopwatchTime + Date.now() - stopwatchObject[key].timeOfLastStopwatchChange}
+                )   
+            }
+        })
     }, 10)
     function addLapTimeToStopwatchArray(reason) {
         setLastLapStopwatchTime(stopwatchTime)
@@ -315,10 +324,14 @@ export default function Stopwatch() {
     }, [stopwatchObject[currentStopwatchObjectIndex].timeArray])
 
 
+    
+    const stopwatchListDropdownScrollElement = useRef()
     const stopwatchScrollElement = useRef()
+
+
     useEffect(() => {
       resizeEventHandler()
-    }, [stopwatchScrollElement])
+    }, [stopwatchScrollElement, stopwatchListDropdownScrollElement, null, Object.keys(stopwatchObject).length])
 
     onresize = resizeEventHandler
 
@@ -329,6 +342,12 @@ export default function Stopwatch() {
             let calculatedPercentage = ((stopwatchScrollElement.current.offsetWidth - stopwatchScrollElement.current.clientWidth)/stopwatchScrollElement.current.offsetWidth)
             stopwatchScrollElement.current.style= `padding-right: ${calculatedPercentage * 130}%`
           }
+          if(stopwatchListDropdownScrollElement.current){
+            let halfPad = (stopwatchListDropdownScrollElement.current.offsetWidth - stopwatchListDropdownScrollElement.current.clientWidth)/2
+            stopwatchListDropdownScrollElement.current.style= `padding-left: ${halfPad}px; padding-right: ${halfPad}px`
+            // stopwatchListDropdownScrollElement?.current?.children.length >0 && stopwatchListDropdownScrollElement?.current?.lastChild.scrollIntoView({behavior: "smooth"})
+          }
+          
         }, 1200); // to wait for animations to finish   
     }
 
@@ -368,11 +387,26 @@ export default function Stopwatch() {
                 </div>
                 
                 
-            <button className={`stopwatch-button add-stopwatch-entry ${contracted ? 'add-stopwatch-entry-contracted' : ''}`} onClick={(event) => {event.stopPropagation();
-            updateObjectEntry(stopwatchObject, Object.entries(stopwatchObject).length, Object.assign({}, defaultStopwatchObjectEntry, {name: `Stopwatch ${Object.entries(stopwatchObject).length}`}));
-            navigateToKeyFromObjectAndDisplay(Object.entries(stopwatchObject).length, stopwatchObject, setCurrentStopwatchObjectIndex, currentStopwatchObjectIndex, stopwatchWrapper.current, true)}}
-            >➕</button>
-            <input className={`stopwatch-label-input ${contracted ? 'stopwatch-label-input-contracted' : ''}`} value={stopwatchObject[currentStopwatchObjectIndex].name} onChange={(event) => updateObjectEntry(stopwatchObject, currentStopwatchObjectIndex, Object.assign({}, stopwatchObject[currentStopwatchObjectIndex], {name: event.target.value}))}/>
+                <button className={`stopwatch-button add-stopwatch-entry ${contracted ? 'add-stopwatch-entry-contracted' : ''}`} onClick={(event) => {event.stopPropagation();
+                updateObjectEntry(stopwatchObject, Object.entries(stopwatchObject).length, Object.assign({}, defaultStopwatchObjectEntry, {name: `Stopwatch ${Object.entries(stopwatchObject).length}`}));
+                navigateToKeyFromObjectAndDisplay(Object.entries(stopwatchObject).length, stopwatchObject, setCurrentStopwatchObjectIndex, currentStopwatchObjectIndex, stopwatchWrapper.current, true)}}
+                >➕</button>
+                <div className={`input-container ${contracted ? 'contracted' : ''}`}>
+                    <input className={`stopwatch-label-input ${contracted ? 'stopwatch-label-input-contracted' : ''}`} value={stopwatchObject[currentStopwatchObjectIndex].name} onChange={(event) => updateObjectEntry(stopwatchObject, currentStopwatchObjectIndex, Object.assign({}, stopwatchObject[currentStopwatchObjectIndex], {name: event.target.value}))}/>
+                    {Object.keys(stopwatchObject).length > 1 &&  <div className="stopwatch-list-dropdown">
+                        <div ref={stopwatchListDropdownScrollElement} className="stopwatch-list-dropdown-scroll">
+                        {Object.keys(stopwatchObject).filter((key) => key != currentStopwatchObjectIndex).map((key, index) => (
+                            <p className='stopwatch-list-dropdown-item' key={index} onClick={(event) => {navigateToKeyFromObjectAndDisplay(Number(key), stopwatchObject, setCurrentStopwatchObjectIndex, currentStopwatchObjectIndex, stopwatchWrapper.current, true)}}>
+                                {stopwatchObject[key].name}<br/>{
+                                    stopwatchObject[key].running
+                                    ? turnMillisecondsPretty(stopwatchObject[key].lastStoppedStopwatchTime + Date.now() - stopwatchObject[key].timeOfLastStopwatchChange, stopwatchObject[key].formatSettings)
+                                    : turnMillisecondsPretty(stopwatchObject[key].stopwatchTime, stopwatchObject[key].formatSettings)
+                                }
+                            </p>
+                        ))}
+                        </div>
+                    </div>}
+                </div>
             </div>
 
             {currentStopwatchObjectIndex > 0 && <button className={`stopwatch-button stopwatch-navigation stopwatch-navigation-left`} onClick={(event) => navigateToKeyFromObjectAndDisplay(currentStopwatchObjectIndex - 1, stopwatchObject, setCurrentStopwatchObjectIndex, currentStopwatchObjectIndex, stopwatchWrapper.current)}>
