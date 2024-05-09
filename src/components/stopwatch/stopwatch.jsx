@@ -27,7 +27,8 @@ export default function Stopwatch() {
         showPrimaryAndNotSecondaryAverage: true,
         lapAndStopped: false,
         formatSettings: defaultFormatSettings,
-        timeArray: []
+        timeArray: [],
+        running:false
     }
     // initialize stopwatch object with one entry and set it as current using 0 key
     const [stopwatchObject, setStopwatchObject] = useState({0: defaultStopwatchObjectEntry})
@@ -44,6 +45,7 @@ export default function Stopwatch() {
     const [showPrimaryAndNotSecondaryAverage, setShowPrimaryAndNotSecondaryAverage] = useState(true)
     const [lapAndStopped, setLapAndStopped] = useState(false)
     const [formatSettings, setFormatSettings] = useState(stopwatchObject[currentStopwatchObjectIndex].formatSettings)
+    const [currentIndexRunning, setCurrentIndexRunning] = useState([])
     
 
     // use effects to update object
@@ -61,7 +63,8 @@ export default function Stopwatch() {
                 stopwatchTime: stopwatchTime,
                 showPrimaryAndNotSecondaryAverage: showPrimaryAndNotSecondaryAverage,
                 lapAndStopped: lapAndStopped,
-                formatSettings: formatSettings
+                formatSettings: formatSettings,
+                running: currentIndexRunning
             }
         )   
     }, [
@@ -74,7 +77,8 @@ export default function Stopwatch() {
         stopwatchTime, 
         showPrimaryAndNotSecondaryAverage, 
         lapAndStopped, 
-        formatSettings
+        formatSettings,
+        currentIndexRunning
     ])
     
 
@@ -91,6 +95,7 @@ export default function Stopwatch() {
         setShowPrimaryAndNotSecondaryAverage(stopwatchObject[currentStopwatchObjectIndex].showPrimaryAndNotSecondaryAverage)
         setLapAndStopped(stopwatchObject[currentStopwatchObjectIndex].lapAndStopped)
         setFormatSettings(stopwatchObject[currentStopwatchObjectIndex].formatSettings)
+        setCurrentIndexRunning(stopwatchObject[currentStopwatchObjectIndex].running)
         
         if(stopwatchObject[currentStopwatchObjectIndex].timeArray.length > 0){
             let {lastDifference, reason} = stopwatchObject[currentStopwatchObjectIndex].timeArray[stopwatchObject[currentStopwatchObjectIndex].timeArray.length - 1]
@@ -112,11 +117,13 @@ export default function Stopwatch() {
 
 
     function runStopWatch() {
+        console.log(!stopwatchObject[currentStopwatchObjectIndex].running)
+        setCurrentIndexRunning(!stopwatchObject[currentStopwatchObjectIndex].running)
         setTimeOfLastStopwatchChange(Date.now()) // freshen time stamp A
             
         setLastStoppedStopwatchTime(stopwatchTime) // document old time
         
-        
+
       
         if(stopwatchTime > 0 && useIntervalActive){addLapTimeToStopwatchArray("Stopped")}
         !useIntervalActive && setLapAndStopped(false)
@@ -124,9 +131,12 @@ export default function Stopwatch() {
         setUseIntervalActive(!useIntervalActive) // begin updating difference in time by activating interval
     }
     useInterval(() => {
-        setStopwatchTime(lastStoppedStopwatchTime + Date.now() - timeOfLastStopwatchChange)
+        if(currentIndexRunning){
+            setStopwatchTime(lastStoppedStopwatchTime + Date.now() - timeOfLastStopwatchChange)
+            console.log("running")
+        }
 
-    }, useIntervalActive ? 10 : null)
+    }, 10)
     function addLapTimeToStopwatchArray(reason) {
         setLastLapStopwatchTime(stopwatchTime)
         if(stopwatchTime === 0) return
@@ -181,7 +191,7 @@ export default function Stopwatch() {
             }
         )
 
-        lapNotificationElement.current.innerHTML = `+${turnMillisecondsPretty(situationalLastDifference, stopwatchObject[currentStopwatchObjectIndex].formatSettings, true)} ${situationalReason}`
+        lapNotificationElement.current.innerHTML = `-${turnMillisecondsPretty(situationalLastDifference, stopwatchObject[currentStopwatchObjectIndex].formatSettings, true)} ${situationalReason}`
         if(contracted){lapNotificationElement.current.animate(lapAnimationContracted, {duration: 800, easing: "ease"})}
         else if(!contracted){lapNotificationElement.current.animate(lapAnimation, {duration: 800, easing: "ease"})}
     }   
@@ -332,7 +342,7 @@ export default function Stopwatch() {
                 <div className={`stopwatch-list-container ${contracted ? 'stopwatch-list-container-contracted' : ''}`}>
                     <div ref={stopwatchScrollElement} className={`stopwatch-scroll-container ${contracted ? 'stopwatch-scroll-container-contracted' : ''}`}>
                         <ul className='stopwatch-unordered-list'>{stopwatchObject[currentStopwatchObjectIndex]?.timeArray.length > 0 && stopwatchObject[currentStopwatchObjectIndex].timeArray.map((object, index) => (
-                            <StopwatchTimeItem key={index} passedKey={index} object={object}/>
+                            <StopwatchTimeItem key={index} passedKey={index} object={object} settingsObject={stopwatchObject[currentStopwatchObjectIndex].formatSettings}/>
                         ))}
                         </ul>
                     </div>
@@ -342,7 +352,7 @@ export default function Stopwatch() {
                 <div ref={mainStopwatchTimeElement} className={`main-stopwatch-time ${contracted ? 'main-stopwatch-time-contracted' : ''}`}>{prettyTime}</div>
                 <div ref={lapNotificationElement} className={`lap-notification ${contracted ? 'lap-notification-contracted' : ''}`}></div>
                 <div className={`stopwatch-startstop-lap-container ${contracted ? 'stopwatch-startstop-lap-container-contracted' : ''}`}>
-                    <button className="stopwatch-button" onClick={(event) => {event.stopPropagation(); runStopWatch()}}>{useIntervalActive ? 'Stop' : 'Start'}</button>
+                    <button className="stopwatch-button" onClick={(event) => {event.stopPropagation(); runStopWatch()}}>{currentIndexRunning ? 'Stop' : 'Start'}</button>
                     {stopwatchTime != 0 && (!lapAndStopped ?  <button className="stopwatch-button" onClick={(event) => {event.stopPropagation(); addLapTimeToStopwatchArray("Lap")}}>Lap</button> : <div className='already-lapped'>can't lap<br/>twice</div>)}
                 </div>
                 <div className={`average-lap-container ${contracted ? 'contracted' : ''}`} 
