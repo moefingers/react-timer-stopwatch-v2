@@ -76,7 +76,6 @@ export const lapAnimation = [
     {
         transform: 'translate(0%, -50%)', 
         top: "86%", 
-        left: "3", 
         opacity: 1, 
         fontSize: "calc(var(--general-size-factor-px) * 28)"
     }, {
@@ -87,3 +86,51 @@ export const lapAnimation = [
         fontSize: "calc(var(--general-size-factor-px) * 24)"
     }
 ]
+
+export function calculateBounceUpAndDownLessAndLess(xOrigin, yOrigin, initialHeightOffeset, bounces, bounceDurationDecay, bounceHeightDecay) {
+    const bounceUpAndDown = []
+    let initialPercentage = 0
+
+    // get factor to divide each time by to get them to all add up to 100  ... to100Factor
+    let totalTimeFactors = 0
+    for (let count = 1; count <= bounces+1; count++) {
+        let timeFactor = (1 * (bounceDurationDecay ** count))
+        totalTimeFactors += timeFactor
+    }
+    // console.log("totalTimeFactors", totalTimeFactors)
+    let to100Factor = totalTimeFactors / 100
+
+    bounceUpAndDown.push( // first location
+        {transform: `translate(${xOrigin}%, ${yOrigin}%)`, offset: `${0}`}
+    )
+    // bounces 
+    let accumulatedPercent = 0
+    for (let count = 1; count <= bounces; count++) {
+        // time percent to offset for each bounce
+        let timeFactor = (1 * (bounceDurationDecay ** count))
+        let percentage = (timeFactor / to100Factor)
+        accumulatedPercent += percentage
+        
+        let heightFactor = (1 * (bounceHeightDecay ** count))
+        let bounceHeight = initialHeightOffeset * heightFactor
+
+        bounceUpAndDown.push(
+            {transform: `translate(${xOrigin}%, ${yOrigin + bounceHeight}%)`, 
+            offset: `${accumulatedPercent/100 <= 1 ? accumulatedPercent/100 : 1}`,
+            easing: "ease-in",
+        },
+        )
+        bounceUpAndDown.push(
+            {
+                transform: `translate(${xOrigin}%, ${yOrigin}%)`, 
+                offset: `${((accumulatedPercent + percentage/2)/100 <= 1) ? (accumulatedPercent + percentage/2)/100 : 1}`,
+                easing: "ease-out"
+            },
+        )
+    }
+    // console.log(bounceUpAndDown)
+    // console.log(bounceUpAndDown)
+    return bounceUpAndDown
+}
+
+export const bounceUpAndDownLessAndLessForCenteredObject = calculateBounceUpAndDownLessAndLess(-50, -50, -100, 100, .9, .8)

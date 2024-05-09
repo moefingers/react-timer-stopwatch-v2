@@ -212,7 +212,7 @@ Imagine a landscape phone more extreme/longer than 2:1*/
   box-shadow: var(--box-shadow-setting-primary);
   transition: var(--slow-transition);
   margin: auto;
-
+  overflow: hidden;
 
   width: 80%;
   height: 80%;
@@ -306,13 +306,13 @@ Imagine a landscape phone more extreme/longer than 2:1*/
 /* each */
 .stopwatch-button.stopwatch-navigation-left {
   position: absolute;
-  transform: translate(-100%, -50%);
+  transform: translate(50%, -50%);
   top: 50%;
   left: 0%;
 }
 .stopwatch-button.stopwatch-navigation-right{
   position: absolute;
-  transform: translate(0, -50%);
+  transform: translate(-150%, -50%);
   top: 50%;
   left: 100%;
 }
@@ -381,6 +381,87 @@ Imagine a landscape phone more extreme/longer than 2:1*/
 }
 
 
+/************ average lap container */
+div.average-lap-container{
+  /* outline: solid 1px white; */
+  position: absolute;
+  transform: translate(0%, -50%);
+  top: 81%;
+  left: 50%;
+  width: 50%;
+  height: 17%;
+  font-size: calc(var(--general-size-factor-px) * 22);
+  transition: var(--slow-transition);
+  cursor: pointer;
+}
+div.average-lap-container:hover div.average-lap-secondary,
+div.average-lap-container:hover div.average-lap-info-secondary{
+  opacity: .4;
+  visibility: visible;
+}
+
+div.average-lap-container.contracted{
+  transform: translate(-50%, -50%);
+  top: 76%;
+  width: 40%;
+  height: 32%;
+}
+div.average-lap-container * {
+  transition: var(--slow-transition);
+  position: absolute;
+  transform: translate(-50%, -50%);
+  text-wrap: nowrap;
+}
+
+div.average-lap-container.contracted div.average-lap-info{ /* dynamic lap info shown in contracted mode*/
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0%);
+  left: 50%;
+}
+/* expanded mode left side**** left side hidden until hover in expanded mode*/
+div.average-lap-info-secondary{ 
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, 0%);
+  left: 0%;
+}
+div.average-lap-secondary{
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, 100%);
+  left: 0%;
+}
+/* expanded mode right side ***** always shown in expanded mode */
+div.average-lap-info-primary{
+  transform: translate(-100%, 0%);
+  left: 100%;
+}
+div.average-lap-primary{
+  opacity: 1;
+  transform: translate(-100%, 100%);
+  left: 100%;
+}
+/* contracted mode top */
+div.average-lap-container.contracted div.average-lap-info-primary{
+  transform: translate(-50%, 0%);
+  left: 50%;
+}
+div.average-lap-container.contracted div.average-lap-primary{
+  transform: translate(-50%, 100%);
+  left: 50%;
+}
+/* contracted mode bottom */
+div.average-lap-container.contracted div.average-lap-info-secondary{
+  transform: translate(-50%, 200%);
+  left: 50%;
+}
+div.average-lap-container.contracted div.average-lap-secondary{
+  transform: translate(-50%, 300%);
+  left: 50%;
+}
+
+
 
 /* ************************stopwatch label */
 input.stopwatch-label-input {
@@ -417,20 +498,22 @@ input.stopwatch-label-input-contracted {
   z-index: -30;
   position: absolute;
   transform: translate(0, -50%);
-  top: 48%;
+  top: 42%;
   left: 3%;
   width: 90%;
-  height: 68%;
-  transition: var(--slow-transition);
+  height: 60%;
+  transition: .5s .5s ease-in-out;
   overflow: hidden;
+  /* outline : white dashed 1px; */
 }
 .stopwatch-list-container-contracted{
   opacity: 0;
   visibility: hidden;
+  
+  transition: .5s ease-in-out;
 }
 .stopwatch-scroll-container{
   position:absolute;
-  transition: var(--slow-transition);
   height: 100%;
   width: 100%;
   overflow-x:hidden;
