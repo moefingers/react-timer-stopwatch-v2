@@ -252,6 +252,7 @@ Imagine a landscape phone more extreme/longer than 2:1*/
 /******** expand and contract stopwatch button */
 /* default state midway preview */
 .stopwatch-button.expand-contract-stopwatch {
+  background-color: var(--background-color-primary);
   border-radius: 33%;
   box-shadow: var(--box-shadow-setting-secondary);
   width: var(--font-size-button-medium);
@@ -261,6 +262,10 @@ Imagine a landscape phone more extreme/longer than 2:1*/
   top: 7%;
   left: 7%;
   transition: all var(--slow-transition);
+}
+.stopwatch-button.expand-contract-stopwatch:active{
+  background-color: var(--active-button-background);
+  transition: background-color 0s !important;
 }
 .stopwatch-button.expand-contract-stopwatch:hover{
   border-radius: 50%;
@@ -543,6 +548,7 @@ input.stopwatch-label-input {
   text-shadow: 0 0 1rem rgba(255,255,255,.6);
   font-size: calc(var(--general-size-factor-px) * 20);
   line-height: calc(var(--general-size-factor-px) * 25);
+  cursor: pointer;
 }
 
 .stopwatch-list-dropdown-item:hover{
@@ -568,19 +574,17 @@ input.stopwatch-label-input {
   top: 18%;
   left: 80%;
 }
-
-
 .stopwatch-list-container{
-  z-index: -30;
+  z-index: -3;
   position: absolute;
   transform: translate(0, -50%);
-  top: 42%;
+  top: 46%;
   left: 4%;
   width: 96%;
-  height: 60%;
+  height: 80%;
   transition: .5s .5s ease-in-out;
   overflow: hidden;
-  /* outline : white dashed 1px; */
+  mask-image: linear-gradient(to bottom,transparent 0%, black 5%, black 77%, transparent 100%)
 }
 .stopwatch-list-container-contracted{
   opacity: 0;
@@ -601,6 +605,8 @@ input.stopwatch-label-input {
 .stopwatch-unordered-list{
   list-style-type: none;
   width: 100%;
+  margin-top: 4%;
+  margin-bottom: 15%;
 }
 .stopwatch-time-item{
   font-size: calc(var(--general-size-factor-px) * 24);
