@@ -117,7 +117,7 @@ input:focus{
 }
 .stopwatch-section, .timer-section {
   margin: auto;
-  outline: dashed red 1px;
+  /* outline: dashed red 1px; */
   overflow: hidden;
   justify-content: center;
   align-items: center;
