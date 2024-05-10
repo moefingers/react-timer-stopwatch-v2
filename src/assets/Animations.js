@@ -1,4 +1,4 @@
-export const fadeOpacityIn = [{opacity: 0}, {opacity: 1}]
+export const fadeOpacityIn = [{opacity: 0, visibility: 'hidden'}, {opacity: 1, visibility: 'visible'}]
 
 // export const slideInFromLeft = [{transform: 'translateX(-100%)'}, {transform: 'translateX(0)'}]
 
@@ -134,3 +134,34 @@ export function calculateBounceUpAndDownLessAndLess(xOrigin, yOrigin, initialHei
 }
 
 export const bounceUpAndDownLessAndLessForCenteredObject = calculateBounceUpAndDownLessAndLess(-50, -50, -100, 100, .9, .8)
+
+
+export function travelOneCircle(circleRadius, offsetStart, offsetEnd) {
+
+    return [
+        {
+        offsetDistance: offsetStart,
+        offsetPath: `circle(${circleRadius} at 50% 50%)`,
+        },
+        {
+        offsetDistance: offsetEnd,
+        offsetPath: `circle(${circleRadius} at 50% 50%)`,
+        }
+    ]
+}
+
+export function spinAndFadeInFromRadiusToRadiusAtOffset(spinDeg, radStart, radEnd, offsetStart, offsetEnd) {
+
+    return [
+        {
+        transform: `rotate(${- 90 - (360 * (offsetStart / 100))}deg)`,
+        offsetDistance: `${offsetStart}%`,
+        offsetPath: `circle(${radStart}% at 50% 50%)`,
+        },
+        {
+        transform: `rotate(${- 90 - spinDeg - (360 * (offsetStart / 100))}deg)`,
+        offsetDistance: `${offsetEnd}%`,
+        offsetPath: `circle(${radEnd}% at 50% 50%)`,
+        }
+    ]
+}

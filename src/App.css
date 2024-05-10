@@ -362,33 +362,103 @@ Imagine a landscape phone more extreme/longer than 2:1*/
 /* ***********stopwatch settings button */
 .stopwatch-button.stopwatch-settings-button{
   position: absolute;
-  top: 93.5%;
-  left: 40%;
-  width: var(--font-size-button-medium);
-  height: var(--font-size-button-medium);
+  offset-path: circle(45% at 50% 50%);
+  offset-distance: 32%;
+  width: 6%;
+  height: 6%;
   line-height: var(--font-size-button-medium);
   text-align: center;
   vertical-align: middle;
   transform: translate(-50%, -50%);
-  transition: var(--slow-transition), font-size var(--fast-transition);
+  transition: var(--moderate-transition);
   clip-path: url("./assets/gear.svg");
+  fill:var(--text-color-secondary);
+  
   
 
-  offset-path: circle(40% at 50% 50%);
-  /* animation: spinClockwiseForCenteredObject 1s linear infinite; */
-  animation: offsetPathTest 4s linear infinite;
-  animation-play-state: paused;
+  animation: spinClockwiseForCenteredObject 2s linear infinite paused;
+  outline: white dashed 1px;
 }
-.stopwatch-button.stopwathc-settings-button:hover {
-  transition: var(--fast-transition), font-size var(--slow-transition);
+
+.stopwatch-button.stopwatch-settings-button svg{
+  transition:var(--fast-transition)
+}
+.stopwatch-button.stopwatch-settings-button:hover svg{
+  fill:var(--text-color-primary);
+}
+.stopwatch-button.stopwatch-settings-button:hover{
+  animation-play-state: running;
+  fill:var(--text-color-primary);
+  width: 7%;
+  height: 7%;
+  transition: var(--fast-transition);
+}
+
+.stopwatch-button.stopwatch-settings-button.settings-open svg{
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  animation: spinClockwiseForCenteredObject 1s ease-in-out infinite paused;
+  outline: white dashed 1px;
+  fill:var(--text-color-primary);
+}
+.stopwatch-button.stopwatch-settings-button.settings-open:hover svg{
+  animation-play-state: running;
+}
+.stopwatch-button.stopwatch-settings-button.settings-open svg{
+  animation-play-state: running;
 }
 
 .stopwatch-button.stopwatch-settings-button.contracted{
   top: 80%;
   left: 20%;
+  offset-path: circle(41% at 50% 50%);
+  offset-distance: 41%;
 }
-.stopwatch-button.stopwatch-settings-button.spinning{
-  animation-play-state: running;
+
+/* stopwatch settings */
+.settings-container.stopwatch {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  /* outline: white dashed 1px; */
+  transition: 1.2s cubic-bezier(0.82, 0.19, 0.74, 0.67);
+  pointer-events: none;
+  
+  visibility: hidden; 
+  opacity: 0;
+}
+.settings-container.stopwatch > * {
+  z-index: -10;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.settings-container.stopwatch.settings-open > * {
+  pointer-events: all;
+}
+
+.settings-container.stopwatch.settings-open{
+  opacity: 1;
+  visibility: visible;
+}
+
+.stopwatch-button.open-colors-button{
+  fill: var(--text-color-secondary);
+  font-size: 0;
+  width: 8%;
+  height: 8%;
+}
+.stopwatch-button.open-colors-button:hover{
+  fill: var(--text-color-primary);
+  width: 10%;
+  height: 10%;
 }
 
 /************ main stop watch time and lap notif */
@@ -701,6 +771,7 @@ input.stopwatch-label-input {
     transform: translate(-50%, -50%) rotate(360deg);
   }
 }
+
 @keyframes backToZeroDegreesRotationForCenteredObject {
   0% {
   }
@@ -709,16 +780,9 @@ input.stopwatch-label-input {
   }
 }
 
-@keyframes offsetPathTest {
-  0% {
-    offset-distance: 0%;
-    offset-path: circle(40% at 50% 50%);
-  }
-  100% {
-    offset-distance: 1000%;
-    offset-path: circle(0% at 50% 50%);
-  }
-}
+
+
+
 
 
 /* media query */
