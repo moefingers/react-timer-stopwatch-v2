@@ -243,7 +243,6 @@ Imagine a landscape phone more extreme/longer than 2:1*/
   box-shadow: var(--box-shadow-setting-primary);
   transition: var(--slow-transition);
   margin: auto;
-  overflow: hidden;
 
   width: 80%;
   height: 80%;
