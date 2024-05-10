@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 
 import { 
-    fadeOpacityIn, lapAnimation, lapAnimationContracted,
+    fadeOpacityIn, lapAnimation, lapAnimationContracted, travelOneCircle,
     slideAndFadeInFromLeft, slideAndFadeInFromRight, slideAndFadeOutToRight, slideAndFadeOutToLeft,
     slideAndFadeInFromLeftForCenteredObject, slideAndFadeInFromRightForCenteredObject, slideAndFadeOutToRightForCenteredObject, slideAndFadeOutToLeftForCenteredObject,
      expandToWidthThenToHeight, bounceUpAndDownLessAndLessForCenteredObject, calculateBounceUpAndDownLessAndLess } from '../../assets/Animations.js'
@@ -52,6 +52,7 @@ export default function Stopwatch() {
 
     // use effects to update object
     useEffect(() => {
+        console.log("updated object by detection of state change")
         updateObjectEntry(
             stopwatchObject,
             currentStopwatchObjectIndex, 
@@ -119,6 +120,7 @@ export default function Stopwatch() {
 
 
     function runStopWatch() {
+        setLapAndStopped(false)
         console.log(!stopwatchObject[currentStopwatchObjectIndex].running)
         setCurrentIndexRunning(!stopwatchObject[currentStopwatchObjectIndex].running)
         setTimeOfLastStopwatchChange(Date.now()) // freshen time stamp A
@@ -128,7 +130,6 @@ export default function Stopwatch() {
 
       
         if(stopwatchTime > 0 && useIntervalActive){addLapTimeToStopwatchArray("Stopped")}
-        !useIntervalActive && setLapAndStopped(false)
         !useIntervalActive && setLastRanStopwatchTime(Date.now())
         setUseIntervalActive(!useIntervalActive) // begin updating difference in time by activating interval
     }
@@ -149,6 +150,7 @@ export default function Stopwatch() {
     }, 10)
     function addLapTimeToStopwatchArray(reason) {
         setLastLapStopwatchTime(stopwatchTime)
+        
         if(stopwatchTime === 0) return
         let alreadyContainsTimeType = ""  // initialize already contains situation
         let indexOfTimeObjectToUpdate
@@ -185,6 +187,7 @@ export default function Stopwatch() {
             situationalLastDifference = stopwatchTime - (lastLapStopwatchTime || 0)
             console.log(`stopwatchtime ${stopwatchTime} - lastLapStopwatchTime ${lastLapStopwatchTime} = ${situationalLastDifference}`)
             situationalReason = typeof reason == 'string' && reason || 'Lap'
+            
         } else if (alreadyContainsTimeType == "Lap"){
             setLapAndStopped(true)
             return
@@ -201,7 +204,8 @@ export default function Stopwatch() {
                 stopwatchTime: stopwatchTime,
             }
         )
-
+        if(situationalReason == "Stopped") {setLapAndStopped(false)}
+        if (situationalReason == ("Stop + Lap" || "Lap" )) {setLapAndStopped(true)} 
         lapNotificationElement.current.innerHTML = `-${turnMillisecondsPretty(situationalLastDifference, stopwatchObject[currentStopwatchObjectIndex].formatSettings, true)} ${situationalReason}`
         if(contracted){lapNotificationElement.current.animate(lapAnimationContracted, {duration: 800, easing: "ease"})}
         else if(!contracted){lapNotificationElement.current.animate(lapAnimation, {duration: 800, easing: "ease"})}
@@ -280,7 +284,7 @@ export default function Stopwatch() {
             let caseResult = 797 * (newPrettyTime.length ** -1.03)
             switch(newPrettyTime.length) {
                 case 0: case 1: case 2: case 3: case 4: {caseResult = 180; break}
-                default: {caseResult = (797 * (newPrettyTime.length ** -1.03))}
+                default: {caseResult = (730 * (newPrettyTime.length ** -1.03))}
             }
             mainStopwatchTimeElement.current.style.fontSize = `calc(var(--general-size-factor-px) * ${caseResult})` // 12, 62 | 11, 69 | 10, 76 | 9, 83 | 8, 94
         }
@@ -339,11 +343,39 @@ export default function Stopwatch() {
             }
         )
         calculateAverages()
+
+        console.log(stopwatchObject[selectedStopwatchIndex].timeArray[stopwatchObject[selectedStopwatchIndex].timeArray.length - 1]?.time)
+        console.log(stopwatchObject[selectedStopwatchIndex].stopwatchTime)
+        if ((stopwatchObject[selectedStopwatchIndex].timeArray[stopwatchObject[selectedStopwatchIndex].timeArray.length - 1]?.reason 
+            == ('Lap' || "Stop + Lap") 
+        ) || (stopwatchObject[selectedStopwatchIndex].timeArray[stopwatchObject[selectedStopwatchIndex].timeArray.length - 1]?.time 
+            == stopwatchObject[selectedStopwatchIndex].stopwatchTime)){
+            console.log("Lap and stopped")
+            // setLapAndStopped(true)
+            
+        } else {
+            setLapAndStopped(false)
+        }
+        setLapAndStopped(false)
+        let lastLapped = 0
+        let lastStopped = 0
+        stopwatchObject[selectedStopwatchIndex].timeArray.forEach((timeObject, index) => {
+            if(timeObject.reason == ("Stopped" || "Stop + Lap")){lastStopped = timeObject.time}
+            if(timeObject.reason == ("Lap" || "Stop + Lap")){lastLapped = timeObject.time}
+        })
+
+        setLastLapStopwatchTime(lastLapped)
+        setLastStoppedStopwatchTime(lastStopped)
     }
 
+    const settingsMenuWrapperElement = useRef()
+    const settingsButtonElement = useRef()
     const [settingsOpen, setSettingsOpen] = useState(false)
     function unfurlSettings(){
-        setSettingsOpen(!settingsOpen)
+        if(contracted){
+            settingsButtonElement?.current?.animate(travelOneCircle("41%", "41%", "141%"), {duration: 1000, easing: "ease-out"})
+        }
+        setSettingsOpen(!settingsOpen) // to trigger animations in settings menu.. this behavior will depend on contracted which will also be passed in
     }
 
 
@@ -378,7 +410,7 @@ export default function Stopwatch() {
     return (
         <div className="stopwatch-section">
             
-            <h1 className="title">⏱ Stopwatch ⏱</h1>
+            <h1 className={`title ${contracted ? 'contracted' : ''}`}>⏱ Stopwatch ⏱</h1>
             <div ref={stopwatchWrapper} className={`stopwatch-wrapper ${contracted ? 'stopwatch-wrapper-contracted' : ''}`}>
                 <button className={`stopwatch-button expand-contract-stopwatch ${contracted ? 'expand-contract-stopwatch-contracted' : ''}`}  onClick={() => setContracted(!contracted)}></button>
                 
@@ -431,12 +463,12 @@ export default function Stopwatch() {
                         </div>
                     </div>}
                 </div>
-                <button className={`stopwatch-button stopwatch-settings-button ${contracted ? 'contracted' : ''} ${settingsOpen ? 'spinning' : ''}`} onClick={(event) => {unfurlSettings()}}>
+                <button ref={settingsButtonElement} className={`stopwatch-button stopwatch-settings-button ${contracted ? 'contracted' : ''} ${settingsOpen ? 'settings-open' : ''}`} onClick={(event) => {unfurlSettings()}}>
                     <svg fill="#ffffff" version="1.1" id="Capa_1" viewBox="0 0 45.973 45.973" stroke="#ffffff"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M43.454,18.443h-2.437c-0.453-1.766-1.16-3.42-2.082-4.933l1.752-1.756c0.473-0.473,0.733-1.104,0.733-1.774 c0-0.669-0.262-1.301-0.733-1.773l-2.92-2.917c-0.947-0.948-2.602-0.947-3.545-0.001l-1.826,1.815 C30.9,6.232,29.296,5.56,27.529,5.128V2.52c0-1.383-1.105-2.52-2.488-2.52h-4.128c-1.383,0-2.471,1.137-2.471,2.52v2.607 c-1.766,0.431-3.38,1.104-4.878,1.977l-1.825-1.815c-0.946-0.948-2.602-0.947-3.551-0.001L5.27,8.205 C4.802,8.672,4.535,9.318,4.535,9.978c0,0.669,0.259,1.299,0.733,1.772l1.752,1.76c-0.921,1.513-1.629,3.167-2.081,4.933H2.501 C1.117,18.443,0,19.555,0,20.935v4.125c0,1.384,1.117,2.471,2.501,2.471h2.438c0.452,1.766,1.159,3.43,2.079,4.943l-1.752,1.763 c-0.474,0.473-0.734,1.106-0.734,1.776s0.261,1.303,0.734,1.776l2.92,2.919c0.474,0.473,1.103,0.733,1.772,0.733 s1.299-0.261,1.773-0.733l1.833-1.816c1.498,0.873,3.112,1.545,4.878,1.978v2.604c0,1.383,1.088,2.498,2.471,2.498h4.128 c1.383,0,2.488-1.115,2.488-2.498v-2.605c1.767-0.432,3.371-1.104,4.869-1.977l1.817,1.812c0.474,0.475,1.104,0.735,1.775,0.735 c0.67,0,1.301-0.261,1.774-0.733l2.92-2.917c0.473-0.472,0.732-1.103,0.734-1.772c0-0.67-0.262-1.299-0.734-1.773l-1.75-1.77 c0.92-1.514,1.627-3.179,2.08-4.943h2.438c1.383,0,2.52-1.087,2.52-2.471v-4.125C45.973,19.555,44.837,18.443,43.454,18.443z M22.976,30.85c-4.378,0-7.928-3.517-7.928-7.852c0-4.338,3.55-7.85,7.928-7.85c4.379,0,7.931,3.512,7.931,7.85 C30.906,27.334,27.355,30.85,22.976,30.85z"></path> </g> </g> </g></svg>
                 </button>
-                <div className={`settings-menu ${contracted ? 'contracted' : ''}`}>
-                    <SettingsMenu currentObjectIndex={currentStopwatchObjectIndex} currentObjectSettings={stopwatchObject[currentStopwatchObjectIndex].formatSettings} updateObjectEntry={updateObjectEntry} version="stopwatch"/>
-                </div>
+                
+                <SettingsMenu formatSettingsState={formatSettings} setFormatSettingsState={setFormatSettings} stopwatchObject={stopwatchObject} currentStopwatchObjectIndex={currentStopwatchObjectIndex} updateObjectEntry={updateObjectEntry} version="stopwatch" settingsOpen={settingsOpen} contracted={contracted}/>
+                
             </div>
 
             {currentStopwatchObjectIndex > 0 && <button className={`stopwatch-button stopwatch-navigation stopwatch-navigation-left`} onClick={(event) => navigateToKeyFromObjectAndDisplay(currentStopwatchObjectIndex - 1, stopwatchObject, setCurrentStopwatchObjectIndex, currentStopwatchObjectIndex, stopwatchWrapper.current)}>

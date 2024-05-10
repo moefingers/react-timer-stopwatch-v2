@@ -110,15 +110,15 @@ input:focus{
 }
 /* common between stopwatch and timer*/
 
-.app{
+/* .app{
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%)
-}
+} */
 .stopwatch-section, .timer-section {
   margin: auto;
-  /* outline: dashed red 1px; */
+  outline: dashed red 1px;
   overflow: hidden;
   justify-content: center;
   align-items: center;
@@ -146,19 +146,40 @@ input:focus{
 /* *************cwazy media quewies */
 /***********For sizes of .stopwatch-section and .timer-section */
 /*******Portrait */
-@media screen and (orientation:portrait) {
-  .app{
-    display: flex;
-    flex-direction: column;
-  } 
-}
+/* @media screen and (orientation:portrait) {
+  .stopwatch-section{
+    transform: translate(0, 50%) rotate(0deg);
+    offset-path: circle(50vh at 50vw 50vh);
+    offset-distance:75%;
+  }
+  .timer-section{
+    transform: translate(0, 50%) rotate(180deg);
+    offset-path: circle(50vh at 50vw 50vh);
+    offset-distance:25%;
+  }
+} */
 /* stack using width to avoid exceeding height where 2x vw > vh 
 Imagine a portrait phone more extreme/longer than 1:2..
 then width is the limiting factor*/
 @media screen and ( width < 50vh ) and (orientation:portrait){ /*case 1*/
+  .app{
+    width: 100vw;
+    height: 200vw;
+  }
   .stopwatch-section, .timer-section {
     width: 100vw;
     height: 100vw;
+  }
+  
+  .stopwatch-section{
+    transform: translate(0, 0) rotate(0deg);
+    offset-path: circle(50vw at 50vw 50vh);
+    offset-distance:75%;
+  }
+  .timer-section{
+    transform: translate(0, 0) rotate(180deg);
+    offset-path: circle(50vw at 50vw 50vh);
+    offset-distance:25%;
   }
   :root {
     --font-size-title: calc((0.0650 * 100vw) - 1.57px);
@@ -172,9 +193,24 @@ then width is the limiting factor*/
 /* stack using height to avoid exceeding width where vh > 2x vw 
 Imagine a portrait phone between 1:1 and 1:2*/
 @media screen and ( width >= 50vh ) and (orientation:portrait){
+  .app{
+    width: 50vh;
+    height: 100vh;
+  }
   .stopwatch-section, .timer-section {
     width: 50vh;
     height: 50vh;
+  }
+  
+  .stopwatch-section{
+    transform: translate(0, 0) rotate(0deg);
+    offset-path: circle(25vh at 50vw 50vh);
+    offset-distance:75%;
+  }
+  .timer-section{
+    transform: translate(0, 0) rotate(180deg);
+    offset-path: circle(25vh at 50vw 50vh);
+    offset-distance:25%;
   }
   :root {
     --font-size-title: calc((0.0650 * 50vh) - 1.57px);
@@ -188,18 +224,35 @@ Imagine a portrait phone between 1:1 and 1:2*/
 
 
 /************** Landscape */
-@media screen and (orientation:landscape) {
-  .app{
-    display: flex;
-    flex-direction: row;
+/* @media screen and (orientation:landscape) {
+  .stopwatch-section{
+    transform: translate(0, 50%) rotate(90deg);
+    offset-path: circle(50vw at 50% 50%);
+    offset-distance:50%;
   }
-}
+  .timer-section{
+    transform: translate(0, 50%) rotate(270deg);
+    offset-path: circle(50vw at 50% 50%);
+    offset-distance:0%;
+  }
+} */
 /* stack using width to avoid exceeding height where 2x vh > vw
 Imagine a landscape phone between 1:1 and 2:1  */
 @media screen and ( height > 50vw ) and (orientation:landscape) {
   .stopwatch-section, .timer-section {
     width: 50vw;
     height: 50vw; 
+  }
+  
+  .stopwatch-section{
+    transform: translate(0, 0) rotate(90deg);
+    offset-path: circle(25vw at 50vw 50vh);
+    offset-distance:50%;
+  }
+  .timer-section{
+    transform: translate(0, 0) rotate(270deg);
+    offset-path: circle(25vw at 50vw 50vh);
+    offset-distance:0%;
   }
   :root {
     --font-size-title: calc((0.0650 *50vw) - 1.57px);
@@ -216,6 +269,17 @@ Imagine a landscape phone more extreme/longer than 2:1*/
   .stopwatch-section, .timer-section {
     width: 100vh;
     height: 100vh; 
+  }
+  
+  .stopwatch-section{
+    transform: translate(0, 0) rotate(90deg);
+    offset-path: circle(50vh at 50vw 50vh);
+    offset-distance:50%;
+  }
+  .timer-section{
+    transform: translate(0, 0) rotate(270deg);
+    offset-path: circle(50vh at 50vw 50vh);
+    offset-distance:0%;
   }
   :root {
     --font-size-title: calc((0.0650 * 100vh) - 1.57px);
