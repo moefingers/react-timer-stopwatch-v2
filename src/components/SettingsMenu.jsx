@@ -5,7 +5,7 @@ import { spinAndFadeInFromRadiusToRadiusAtOffset } from "../assets/Animations"
 import { unitInformationObject } from "../assets/TimeFormatting"
 
 
-export default function SettingsMenu({stopwatchObject, currentStopwatchObjectIndex, updateObjectEntry, version, settingsOpen, contracted}) {
+export default function SettingsMenu({setFormatSettingsState, formatSettingsState, stopwatchObject, currentStopwatchObjectIndex, updateObjectEntry, version, settingsOpen, contracted}) {
     const settingsContainerElement = useRef()
     useEffect(() => {
         console.log(settingsContainerElement)
@@ -21,18 +21,34 @@ export default function SettingsMenu({stopwatchObject, currentStopwatchObjectInd
 
     function updateUnitSettingsObject(singleUnitObject) {
         // full object, key, value
-        updateObjectEntry(
-            stopwatchObject,
-            currentStopwatchObjectIndex,
-            {formatSettings: {
-                units: Object.assign(
+        // updateObjectEntry(
+        //     stopwatchObject,
+        //     currentStopwatchObjectIndex,
+        //     {formatSettings: {
+        //         units: Object.assign(
+        //             {}, 
+        //             stopwatchObject[currentStopwatchObjectIndex].formatSettings.units, // old units 
+        //             singleUnitObject // new unit, units IE {hours: true}
+        //         ),
+        //         decimalPlaces: stopwatchObject[currentStopwatchObjectIndex].formatSettings.decimalPlaces
+        //     }}
+        // )
+
+        setFormatSettingsState(
+            Object.assign(
+                {}, 
+                formatSettingsState,
+                {units: Object.assign(
                     {}, 
-                    stopwatchObject[currentStopwatchObjectIndex].formatSettings.units, // old units 
+                    formatSettingsState.units, // old units 
                     singleUnitObject // new unit, units IE {hours: true}
-                ),
-                decimalPlaces: stopwatchObject[currentStopwatchObjectIndex].formatSettings.decimalPlaces
-            }}
+                )}
+            ),
         )
+    }
+
+    function toggleUnit(key) {
+        updateUnitSettingsObject({[key]: !stopwatchObject[currentStopwatchObjectIndex].formatSettings.units[key]})
     }
     
     // maybe use states?
@@ -184,7 +200,7 @@ export default function SettingsMenu({stopwatchObject, currentStopwatchObjectInd
                 </svg>
             </button>
             {Object.keys(settingsObject.units).map((unit, index) => (
-                <button key={index} className="stopwatch-button">
+                <button key={index} className={`stopwatch-button ${stopwatchObject[currentStopwatchObjectIndex].formatSettings.units[unit] ? 'setting-active' : ''}`} onClick={() => {toggleUnit(unit)}}>
                     {unitInformationObject[unit].alias}
                 </button>
             ))}

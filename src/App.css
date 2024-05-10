@@ -460,6 +460,10 @@ Imagine a landscape phone more extreme/longer than 2:1*/
   width: 10%;
   height: 10%;
 }
+.stopwatch-button.setting-active{
+  color: var(--complementary-color-primary)
+}
+
 
 /************ main stop watch time and lap notif */
 .main-stopwatch-time{
