@@ -7,10 +7,8 @@ import { unitInformationObject } from "../assets/TimeFormatting"
 
 export default function SettingsMenu({setFormatSettingsState, formatSettingsState, stopwatchObject, currentStopwatchObjectIndex, updateObjectEntry, version, settingsOpen, contracted}) {
     const settingsContainerElement = useRef()
-    useEffect(() => {
-        console.log(settingsContainerElement)
-    }, [settingsContainerElement, null])
-    /*currentObjectSettings = {
+    /* Example of what i have saved elsewhere
+    currentObjectSettings = {
         units: {
             hours: false,
             minutes: true,
@@ -20,20 +18,6 @@ export default function SettingsMenu({setFormatSettingsState, formatSettingsStat
     }*/
 
     function updateUnitSettingsObject(singleUnitObject) {
-        // full object, key, value
-        // updateObjectEntry(
-        //     stopwatchObject,
-        //     currentStopwatchObjectIndex,
-        //     {formatSettings: {
-        //         units: Object.assign(
-        //             {}, 
-        //             stopwatchObject[currentStopwatchObjectIndex].formatSettings.units, // old units 
-        //             singleUnitObject // new unit, units IE {hours: true}
-        //         ),
-        //         decimalPlaces: stopwatchObject[currentStopwatchObjectIndex].formatSettings.decimalPlaces
-        //     }}
-        // )
-
         setFormatSettingsState(
             Object.assign(
                 {}, 
@@ -68,13 +52,49 @@ export default function SettingsMenu({setFormatSettingsState, formatSettingsStat
     
                     let offset = (24 / (Object.keys(settingsContainerElement.current.children).length - 1)) * (index) // to fix off by one
                     console.log(initialDelay + (delay * index))
+                    async function hideWaitAndShow() {
+                        console.log("hi")
+                        settingsContainerElement.current.children[key].style.display = "none"
+                        await new Promise(r => setTimeout(r, initialDelay + (delay * index)));
+                        settingsContainerElement.current.children[key].style.display = "unset"
+                    }
+                    hideWaitAndShow()
                     settingsContainerElement.current.children[key].animate(
                             spinAndFadeInFromRadiusToRadiusAtOffset(360, 55, 43, 12 + offset, 12 + offset
                         ), {duration: 1000, delay:(initialDelay + (delay * index)), easing: "ease-out", fill: "forwards"}
                     );
                 })
             } else if (!contracted) { // tried opening settings while stopwatch is expanded list mode
-                moveSettingsToExpandedMode()
+                // how many buttons per section in expanded state? 
+                let buttonsPerSection = 2
+                let circularSpace = 20
+                let verticalSpace = 20
+                Object.keys(settingsContainerElement.current.children).forEach((key, index) => {
+                    
+
+                    let setsOfThree = (Math.floor(Object.keys(settingsContainerElement.current.children).length / buttonsPerSection) + 1)
+                    let offsetDividers = (circularSpace / setsOfThree)
+                    
+                    let circularOffset = Math.floor(index / buttonsPerSection) * offsetDividers
+                    console.log(circularOffset)
+                    let verticalOffset = Math.floor(index % buttonsPerSection) * (verticalSpace / buttonsPerSection)
+                    console.log(verticalOffset)
+                    settingsContainerElement.current.children[key].animate(
+                        [
+                            {
+                                transform: `rotate(${- 90 - 360 - (360 * ((32) / 100))}deg)`,
+                                offsetDistance: `${32}%`,
+                                offsetPath: `circle(${45}% at 50% 50%)`
+                                },
+                            {
+                            transform: `rotate(${- 90 - 360 - (360 * ((20 + circularOffset) / 100))}deg)`,
+                            offsetDistance: `${20 + circularOffset}%`,
+                            offsetPath: `circle(${35 + verticalOffset}% at 50% 50%)`,
+                            }
+                        ]
+                        , {duration: 1000, easing: "ease-out", fill: "forwards"}
+                    );
+                })
                 
             }
         } else if (!settingsOpen) { 
