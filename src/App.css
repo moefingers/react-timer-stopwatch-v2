@@ -126,12 +126,20 @@ input:focus{
 }
 
 .title{
+  z-index: 30;
   position: absolute;
   left: 50%;
-  transform: translate(-50%, 0%);
+  top: 50%;
+  /* transform: translate(-50%, -50%); */
+  offset-path: circle(45% at 50% 50%);
+  offset-distance:75%;
   text-wrap: nowrap;
   transition: var(--slow-transition);
   font-size: var(--font-size-title);
+}
+.title.contracted{
+  offset-path: circle(44% at 50% 50%);
+  offset-distance:62.5%;
 }
 
 /* *************cwazy media quewies */
@@ -155,6 +163,10 @@ then width is the limiting factor*/
     --font-size-title: calc((0.0650 * 100vw) - 1.57px);
     --general-size-factor-px: (0.00188323 * 100vw);
   }
+  .title{
+    offset-path: circle(45% at 50% 50%);
+    offset-distance:75%;
+  }
 }
 /* stack using height to avoid exceeding width where vh > 2x vw 
 Imagine a portrait phone between 1:1 and 1:2*/
@@ -166,6 +178,10 @@ Imagine a portrait phone between 1:1 and 1:2*/
   :root {
     --font-size-title: calc((0.0650 * 50vh) - 1.57px);
     --general-size-factor-px: (0.00188323 * 50vh);
+  }
+  .title{
+    offset-path: circle(45% at 50% 50%);
+    offset-distance:50%;
   }
 }
 
@@ -188,6 +204,10 @@ Imagine a landscape phone between 1:1 and 2:1  */
     --font-size-title: calc((0.0650 *50vw) - 1.57px);
     --general-size-factor-px: (0.00188323 * 50vw);
   }
+  .title{
+    offset-path: circle(45% at 50% 50%);
+    offset-distance:75%;
+  }
 }
 /* stack using height to avoid exceeding width where vw > 2x vh 
 Imagine a landscape phone more extreme/longer than 2:1*/
@@ -199,6 +219,10 @@ Imagine a landscape phone more extreme/longer than 2:1*/
   :root {
     --font-size-title: calc((0.0650 * 100vh) - 1.57px);
     --general-size-factor-px: (0.00188323 * 100vh);
+  }
+  .title{
+    offset-path: circle(45% at 50% 50%);
+    offset-distance:50%;
   }
 }
 
