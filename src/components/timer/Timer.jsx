@@ -11,7 +11,7 @@ export default function Timer() {
     return (
         
         <div className="timer-section">
-            <h1 className="title">⏲ Timer ⏲</h1>
+            <h1 className="title">⏲ Timer|work in progress ⏲</h1>
             <div ref={timerWrapper} className={`timer-wrapper ${contracted ? 'timer-wrapper-contracted' : ''}`}>
                 <div className="hour-glass-background"></div>
                 <button className={`timer-button expand-contract-timer ${contracted ? 'expand-contract-timer-contracted' : ''}`}  onClick={() => setContracted(!contracted)}>{contracted ? '➕' : '➖'}</button>

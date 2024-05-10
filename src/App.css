@@ -152,7 +152,7 @@ then width is the limiting factor*/
     height: 100vw;
   }
   :root {
-    --font-size-title: calc((0.0716 * 100vw) - 1.57px);
+    --font-size-title: calc((0.0650 * 100vw) - 1.57px);
     --general-size-factor-px: (0.00188323 * 100vw);
   }
 }
@@ -164,7 +164,7 @@ Imagine a portrait phone between 1:1 and 1:2*/
     height: 50vh;
   }
   :root {
-    --font-size-title: calc((0.0716 * 50vh) - 1.57px);
+    --font-size-title: calc((0.0650 * 50vh) - 1.57px);
     --general-size-factor-px: (0.00188323 * 50vh);
   }
 }
@@ -185,7 +185,7 @@ Imagine a landscape phone between 1:1 and 2:1  */
     height: 50vw; 
   }
   :root {
-    --font-size-title: calc((0.0716 *50vw) - 1.57px);
+    --font-size-title: calc((0.0650 *50vw) - 1.57px);
     --general-size-factor-px: (0.00188323 * 50vw);
   }
 }
@@ -197,7 +197,7 @@ Imagine a landscape phone more extreme/longer than 2:1*/
     height: 100vh; 
   }
   :root {
-    --font-size-title: calc((0.0716 * 100vh) - 1.57px);
+    --font-size-title: calc((0.0650 * 100vh) - 1.57px);
     --general-size-factor-px: (0.00188323 * 100vh);
   }
 }
