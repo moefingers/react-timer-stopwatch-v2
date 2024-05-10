@@ -1,15 +1,18 @@
 export const unitInformationObject = {
     hours: {
       alias: "hrs",
-      asMs: 3600000
+      asMs: 3600000,
+      maxDecimals: 7
     },
     minutes: {
       alias: "min",
-      asMs: 60000
+      asMs: 60000,
+      maxDecimals: 5
     },
     seconds: {
       alias: "sec",
-      asMs: 1000
+      asMs: 1000,
+      maxDecimals: 3
     }
   }
 

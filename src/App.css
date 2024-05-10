@@ -551,6 +551,33 @@ Imagine a landscape phone more extreme/longer than 2:1*/
 .stopwatch-button.setting-active{
   color: var(--complementary-color-primary)
 }
+.decimal-settings-input-container.stopwatch{
+  width: 10%;
+}
+.decimal-settings-input-container.stopwatch > .tooltip{
+  z-index: 1;
+  position: absolute;
+  opacity: 0;
+  visibility: hidden;
+  transform:translate(50%, -50%);
+  pointer-events: none;
+
+  transition: var(--slow-transition);
+
+  font-size: calc(var(--general-size-factor-px) * 20);
+}
+.decimal-settings-input-container.stopwatch:hover > .tooltip {
+  opacity: 1;
+  visibility: visible;
+  transition: var(--fast-transition);
+}
+.decimal-settings-input.stopwatch{
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  width: 100%;
+}
 
 
 /************ main stop watch time and lap notif */
