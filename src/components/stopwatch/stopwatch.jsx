@@ -205,7 +205,7 @@ export default function Stopwatch() {
             }
         )
         if(situationalReason == "Stopped") {setLapAndStopped(false)}
-        if (situationalReason == ("Stop + Lap" || "Lap" )) {setLapAndStopped(true)} 
+        if (situationalReason == "Stop + Lap") {setLapAndStopped(true)} 
         lapNotificationElement.current.innerHTML = `-${turnMillisecondsPretty(situationalLastDifference, stopwatchObject[currentStopwatchObjectIndex].formatSettings, true)} ${situationalReason}`
         if(contracted){lapNotificationElement.current.animate(lapAnimationContracted, {duration: 800, easing: "ease"})}
         else if(!contracted){lapNotificationElement.current.animate(lapAnimation, {duration: 800, easing: "ease"})}
@@ -346,17 +346,25 @@ export default function Stopwatch() {
 
         console.log(stopwatchObject[selectedStopwatchIndex].timeArray[stopwatchObject[selectedStopwatchIndex].timeArray.length - 1]?.time)
         console.log(stopwatchObject[selectedStopwatchIndex].stopwatchTime)
-        if ((stopwatchObject[selectedStopwatchIndex].timeArray[stopwatchObject[selectedStopwatchIndex].timeArray.length - 1]?.reason 
-            == ('Lap' || "Stop + Lap") 
-        ) || (stopwatchObject[selectedStopwatchIndex].timeArray[stopwatchObject[selectedStopwatchIndex].timeArray.length - 1]?.time 
-            == stopwatchObject[selectedStopwatchIndex].stopwatchTime)){
-            console.log("Lap and stopped")
-            // setLapAndStopped(true)
+        console.log(stopwatchObject[selectedStopwatchIndex].timeArray[stopwatchObject[selectedStopwatchIndex].timeArray.length - 1]?.reason)
+        console.log((stopwatchObject[selectedStopwatchIndex].timeArray[stopwatchObject[selectedStopwatchIndex].timeArray.length - 1]?.reason 
+            == 'Lap') || stopwatchObject[selectedStopwatchIndex].timeArray[stopwatchObject[selectedStopwatchIndex].timeArray.length - 1]?.reason == "Stop + Lap" )
+        if ((
+            (
+                stopwatchObject[selectedStopwatchIndex].timeArray[stopwatchObject[selectedStopwatchIndex].timeArray.length - 1]?.reason 
+                == 'Lap'  ) || ( 
+                stopwatchObject[selectedStopwatchIndex].timeArray[stopwatchObject[selectedStopwatchIndex].timeArray.length - 1]?.reason  
+                == "Stop + Lap" ) 
+            ) && (
+                stopwatchObject[selectedStopwatchIndex].timeArray[stopwatchObject[selectedStopwatchIndex].timeArray.length - 1]?.time 
+                == stopwatchObject[selectedStopwatchIndex].stopwatchTime
+            )){
+            console.log("LAP AND STOPPED")
+            setLapAndStopped(true)
             
         } else {
             setLapAndStopped(false)
         }
-        setLapAndStopped(false)
         let lastLapped = 0
         let lastStopped = 0
         stopwatchObject[selectedStopwatchIndex].timeArray.forEach((timeObject, index) => {
