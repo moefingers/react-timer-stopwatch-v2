@@ -658,7 +658,7 @@ div.average-lap-container:hover div.average-lap-info-secondary{
 
 div.average-lap-container.contracted{
   transform: translate(-50%, -50%);
-  top: 76%;
+  top: 80%;
   width: 40%;
   height: 32%;
 }

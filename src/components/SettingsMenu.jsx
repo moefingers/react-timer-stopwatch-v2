@@ -7,6 +7,7 @@ import { unitInformationObject } from "../assets/TimeFormatting"
 
 export default function SettingsMenu({setFormatSettingsState, formatSettingsState, stopwatchObject, currentStopwatchObjectIndex, updateObjectEntry, version, settingsOpen, contracted}) {
     const settingsContainerElement = useRef()
+    const decimalInputElement = useRef()
     /* Example of what i have saved elsewhere
     currentObjectSettings = {
         units: {
@@ -18,39 +19,49 @@ export default function SettingsMenu({setFormatSettingsState, formatSettingsStat
     }*/
 
     function updateUnitSettingsObject(singleUnitObject) {
-        setFormatSettingsState(
-            Object.assign(
-                {}, 
-                formatSettingsState,
-                {units: Object.assign(
+
+        let newFormatSettingsWithUnits = Object.assign(
+            {}, 
+            formatSettingsState,
+            {
+                units: Object.assign(
                     {}, 
                     formatSettingsState.units, // old units 
                     singleUnitObject // new unit, units IE {hours: true}
-                )}
-            ),
+                )
+            }
         )
+
+        
+
+        let newFormatSettings = Object.assign(
+            {},
+            newFormatSettingsWithUnits,
+            {decimalPlaces: validateDecimalPlaces(decimalInputElement.current.value, newFormatSettingsWithUnits)}
+        )
+        setFormatSettingsState(newFormatSettings)
     }
 
     function toggleUnit(key) {
         updateUnitSettingsObject({[key]: !stopwatchObject[currentStopwatchObjectIndex].formatSettings.units[key]})
     }
-    const decimalInputElement = useRef()
-    function updateDecimalPlaces(newDecimalPlaces) {
+    function validateDecimalPlaces(newDecimalPlaces, formatSettings) {
+        console.log(`${getMaxDecimals(formatSettings)} max decimals`)
         console.log(newDecimalPlaces)
         console.log(`doesnt = "" : ${newDecimalPlaces != ""}`)
         console.log(`!Number : ${!Number(newDecimalPlaces)}`)
         console.log(`to number: ${Number(newDecimalPlaces)}`)
         console.log(`less than 0: ${Number(newDecimalPlaces) < 0}`)
-        console.log(`exceeds max decimals? ${newDecimalPlaces > getMaxDecimals(formatSettingsState)}`)
+        console.log(`exceeds max decimals? ${newDecimalPlaces > getMaxDecimals(formatSettings)}`)
         if(
             newDecimalPlaces != "" && (
-                newDecimalPlaces > getMaxDecimals(formatSettingsState) 
+                newDecimalPlaces > getMaxDecimals(formatSettings) 
                 || (!Number(newDecimalPlaces) && Number(newDecimalPlaces) != 0) 
                 || Number(newDecimalPlaces) < 0
                 || newDecimalPlaces.includes(".")
             )
         ){
-                newDecimalPlaces = getMaxDecimals(formatSettingsState)
+                newDecimalPlaces = getMaxDecimals(formatSettings)
                 console.log("borken input, setting decimal places to ", newDecimalPlaces)
                 decimalInputElement.current.value = newDecimalPlaces
         }
@@ -58,13 +69,14 @@ export default function SettingsMenu({setFormatSettingsState, formatSettingsStat
             newDecimalPlaces = newDecimalPlaces.slice(1)
         }
 
-        setFormatSettingsState(
-            Object.assign(
-                {}, 
-                formatSettingsState,
-                {decimalPlaces: newDecimalPlaces}
-            ),
-        )
+        // setFormatSettingsState(
+        //     Object.assign(
+        //         {}, 
+        //         formatSettingsState,
+        //         {decimalPlaces: newDecimalPlaces}
+        //     ),
+        // )
+        return newDecimalPlaces
     }
     function getMaxDecimals(formatSettings){
         let maxDecimals = 0
@@ -257,7 +269,7 @@ export default function SettingsMenu({setFormatSettingsState, formatSettingsStat
             </button>
             <div className="decimal-settings-input-container stopwatch">
                 <div className="tooltip">decimal places</div>
-                <input ref={decimalInputElement}className='decimal-settings-input stopwatch'type="numeric" min={0} max={getMaxDecimals(formatSettingsState)} value={stopwatchObject[currentStopwatchObjectIndex].formatSettings.decimalPlaces} onChange={(e) => updateDecimalPlaces(e.target.value)}/>
+                <input ref={decimalInputElement}className='decimal-settings-input stopwatch'type="numeric" min={0} max={getMaxDecimals(formatSettingsState)} defaultValue={stopwatchObject[currentStopwatchObjectIndex].formatSettings.decimalPlaces} onChange={(e) => validateDecimalPlaces(e.target.value, formatSettingsState)}/>
             </div>
             {Object.keys(formatSettingsState.units).map((unit, index) => (
                 <button key={index} className={`stopwatch-button ${stopwatchObject[currentStopwatchObjectIndex].formatSettings.units[unit] ? 'setting-active' : ''}`} onClick={() => {toggleUnit(unit)}}>
