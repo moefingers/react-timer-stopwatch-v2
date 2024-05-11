@@ -122,7 +122,7 @@ input:focus{
 }
 /* common between stopwatch and timer*/
 
-.app{
+.app, #root{
   height:100%;
 }
 .stopwatch-section, .timer-section {
@@ -204,7 +204,7 @@ Imagine a portrait phone between 1:1 and 1:2*/
 @media screen and ( width >= 50vh ) and (orientation:portrait){
   .app{
     width: 50vh;
-    height: 100vh;
+    height: 100%;
   }
   .stopwatch-section, .timer-section {
     width: 50vh;
@@ -277,7 +277,7 @@ Imagine a landscape phone more extreme/longer than 2:1*/
 @media screen and ( height <= 50vw ) and (orientation:landscape) {
   .stopwatch-section, .timer-section {
     width: 100vh;
-    height: 100vh; 
+    height: 100%; 
   }
   
   .stopwatch-section{
