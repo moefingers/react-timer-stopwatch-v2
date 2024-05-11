@@ -65,24 +65,36 @@
   --fast-transition: .3s ease-in-out;
 }
 
-
+.test{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: calc(var(--general-size-factor-px) * 30);
+}
+.test.height{
+  left:75%;
+  outline: solid 1px red
+}
 /* common for all*/
 html {
   background-color: var(--background-color-primary);
   color: var(--text-color-primary);
   font-weight: 400;
   font-family:  'Gill Sans', 'Gill Sans MT', "Calibri", 'Trebuchet MS', sans-serif;
-  overflow: hidden;
   height: 100%;
+  overflow: hidden;
 }
 
 body {
   animation: opacity0to1 var(--slow-transition);
+  height:100%
 }
 
 * {
   margin: 0;
   padding: 0;
+  scroll-behavior: smooth;
 }
 
 input {
@@ -110,12 +122,9 @@ input:focus{
 }
 /* common between stopwatch and timer*/
 
-/* .app{
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%)
-} */
+.app{
+  height:100%;
+}
 .stopwatch-section, .timer-section {
   margin: auto;
   /* outline: dashed red 1px; */

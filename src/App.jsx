@@ -9,6 +9,8 @@ function App() {
     <div className="app">
       <Stopwatch />
       <Timer />
+      {/* <div className="test">{window.innerHeight} - { window.outerHeight}</div>
+      <div className="test height" style={{height: window.innerHeight - window.outerHeight}}></div> */}
     </div>
   )
 }
