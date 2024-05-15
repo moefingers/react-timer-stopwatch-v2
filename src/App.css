@@ -364,13 +364,32 @@ Imagine a landscape phone more extreme/longer than 2:1*/
   background-color: var(--active-button-background);
   transition: background-color 0s !important;
 }
-.stopwatch-button.expand-contract-stopwatch:hover{
+.stopwatch-button.expand-contract-stopwatch:hover {
   border-radius: 50%;
   width: calc(var(--font-size-button-medium) * 0.8);
   height: calc(var(--font-size-button-medium) * 0.8);
   transition: all var(--slow-transition),width var(--fast-transition), height var(--fast-transition), border-radius var(--fast-transition), box-shadow var(--fast-transition);
   
   box-shadow: var(--box-shadow-setting-secondary-hover);
+}
+
+.stopwatch-button.expand-contract-stopwatch .tooltip{
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: -50%;
+  opacity: 0;
+  visibility: hidden;
+  transition: var(--fast-transition);
+  font-size: calc(var(--general-size-factor-px) * 20);
+}
+.stopwatch-button.expand-contract-stopwatch .tooltip.contracted{
+  right: unset;
+  left: 100%;
+}
+.stopwatch-button.expand-contract-stopwatch:hover .tooltip{
+  opacity: 1;
+  visibility: visible;
 }
 .stopwatch-button.expand-contract-stopwatch-contracted {
   border-radius:33%;
