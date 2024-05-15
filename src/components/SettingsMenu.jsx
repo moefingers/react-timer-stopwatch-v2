@@ -18,7 +18,7 @@ export default function SettingsMenu({setFormatSettingsState, formatSettingsStat
         decimalPlaces: 3
     }*/
 
-    function updateUnitSettingsObject(singleUnitObject) {
+    function updateUnitSettingsObject(singleUnitObject, decimalPlaces) {
 
         let newFormatSettingsWithUnits = Object.assign(
             {}, 
@@ -37,7 +37,7 @@ export default function SettingsMenu({setFormatSettingsState, formatSettingsStat
         let newFormatSettings = Object.assign(
             {},
             newFormatSettingsWithUnits,
-            {decimalPlaces: validateDecimalPlaces(decimalInputElement.current.value, newFormatSettingsWithUnits)}
+            {decimalPlaces: validateDecimalPlaces(decimalPlaces || decimalInputElement.current.value, newFormatSettingsWithUnits)}
         )
         setFormatSettingsState(newFormatSettings)
     }
@@ -269,7 +269,7 @@ export default function SettingsMenu({setFormatSettingsState, formatSettingsStat
             </button>
             <div className="decimal-settings-input-container stopwatch">
                 <div className="tooltip">decimal places</div>
-                <input ref={decimalInputElement}className='decimal-settings-input stopwatch'type="numeric" min={0} max={getMaxDecimals(formatSettingsState)} defaultValue={stopwatchObject[currentStopwatchObjectIndex].formatSettings.decimalPlaces} onChange={(e) => validateDecimalPlaces(e.target.value, formatSettingsState)}/>
+                <input ref={decimalInputElement}className='decimal-settings-input stopwatch'type="numeric" min={0} max={getMaxDecimals(formatSettingsState)} defaultValue={stopwatchObject[currentStopwatchObjectIndex].formatSettings.decimalPlaces} onChange={(e) => {console.log(e.target.value);updateUnitSettingsObject({}, e.target.value)}}/>
             </div>
             {Object.keys(formatSettingsState.units).map((unit, index) => (
                 <button key={index} className={`stopwatch-button ${stopwatchObject[currentStopwatchObjectIndex].formatSettings.units[unit] ? 'setting-active' : ''}`} onClick={() => {toggleUnit(unit)}}>
