@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
+import { ColorPicker } from "antd";
 
 import { 
     fadeOpacityIn, lapAnimation, lapAnimationContracted, travelOneCircle,
@@ -420,7 +421,9 @@ export default function Stopwatch() {
             
             <h1 className={`title ${contracted ? 'contracted' : ''}`}>⏱ Stopwatch ⏱</h1>
             <div ref={stopwatchWrapper} className={`stopwatch-wrapper ${contracted ? 'stopwatch-wrapper-contracted' : ''}`}>
-                <button className={`stopwatch-button expand-contract-stopwatch ${contracted ? 'expand-contract-stopwatch-contracted' : ''}`}  onClick={() => setContracted(!contracted)}></button>
+                <button className={`stopwatch-button expand-contract-stopwatch ${contracted ? 'expand-contract-stopwatch-contracted' : ''}`}  onClick={() => setContracted(!contracted)}>
+                    <div className={`tooltip ${contracted ? 'contracted' : ''}`}>{contracted ? "Expand" : "Contract"}</div>
+                </button>
                 
                 <div className={`stopwatch-list-container ${contracted ? 'stopwatch-list-container-contracted' : ''}`}>
                     <div ref={stopwatchScrollElement} className={`stopwatch-scroll-container ${contracted ? 'stopwatch-scroll-container-contracted' : ''}`}>

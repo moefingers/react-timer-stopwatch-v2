@@ -564,7 +564,7 @@ Imagine a landscape phone more extreme/longer than 2:1*/
   opacity: 1;
   visibility: visible;
 }
-
+/* colors button */
 .stopwatch-button.open-colors-button{
   fill: var(--text-color-secondary);
   font-size: 0;
@@ -576,6 +576,21 @@ Imagine a landscape phone more extreme/longer than 2:1*/
   width: 10%;
   height: 10%;
 }
+.ant-color-picker-trigger{
+  min-width: unset;
+  width: calc(var(--general-size-factor-px) * 40);
+  height: calc(var(--general-size-factor-px) * 40);
+  padding: calc(var(--general-size-factor-px) * 3);
+  border-radius: calc(var(--general-size-factor-px) * 6);
+}
+div.ant-color-picker-trigger div.ant-color-picker-color-block{
+  width: calc(var(--general-size-factor-px) * 24);
+  height: calc(var(--general-size-factor-px) * 24);
+}
+
+
+
+
 .stopwatch-button.setting-active{
   color: var(--complementary-color-primary)
 }
