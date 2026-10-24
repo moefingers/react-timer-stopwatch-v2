@@ -1,0 +1,9 @@
+# pnpm settings for this app (pnpm >= 10 reads them from here, not from
+# package.json). Not a multi-package workspace. pnpm >= 11 refuses to install
+# while a dependency's build script is unreviewed. The postinstalls of esbuild
+# and @swc/core only check their native binary (and fetch a fallback when it
+# is missing); pnpm installs the matching platform package as an optional
+# dependency and the build runs without either script, so they stay off.
+allowBuilds:
+  '@swc/core': false
+  esbuild: false
